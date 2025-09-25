@@ -30,6 +30,8 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.18.2"
+    "mongoose": "^8.18.2",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12"
   }
 }
