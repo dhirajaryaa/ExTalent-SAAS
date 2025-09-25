@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch --env-file=.env index.js",
-    "start": "node --env-file=.env index.js"
+    "start": "node --env-file=.env index.js",
+    "lint": "eslint . --ext .js,.jsx",
+    "lint:fix": "eslint . --ext .js,.jsx --fix"
   },
   "keywords": [
     "express",
