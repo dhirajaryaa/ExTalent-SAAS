@@ -1,0 +1,20 @@
+{
+  "name": "ExTalent: Saas API",
+  "version": "1.0.0",
+  "description": "extalent api server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --env-file=.env index.js",
+    "start": "node --env-file=.env index.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "MERN",
+    "nodejs"
+  ],
+  "author": "Dhiraj Arya< dhirajkum4580@gmail.com >",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.0"
+}
