@@ -1,8 +1,13 @@
 import z from "zod";
 
+
 const skillsSchema = z.object({
   name: z.string().min(1).max(50),
   score: z.number().int().min(0).max(100),
+});
+
+export const userSkillsSchema = z.object({
+  skills: z.array(skillsSchema).optional()
 });
 
 const updateProfileSchema = z.object({

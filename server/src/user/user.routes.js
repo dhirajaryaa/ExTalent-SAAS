@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUserAccount, getUserProfile, userProfileUpdate } from "./user.controller.js";
+import { deleteUserAccount, getUserProfile, userProfileUpdate, userSkillsUpdate } from "./user.controller.js";
 import authChecker from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -8,6 +8,8 @@ const router = express.Router();
 router.get("/profile", authChecker, getUserProfile);
 // profile update
 router.put("/profile", authChecker, userProfileUpdate);
+// skills update
+router.patch("/profile/skills", authChecker, userSkillsUpdate);
 // delete user account after 30days
 router.delete("/profile", authChecker, deleteUserAccount);
 
