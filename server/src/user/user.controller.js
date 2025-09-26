@@ -66,7 +66,7 @@ const userSkillsUpdate = asyncHandler(async (req, res) => {
   const user = await userModel.findByIdAndUpdate(
     req.user?._id,
     {
-      $set: validate?.data ,
+      $set: validate?.data,
     },
     {
       new: true,
@@ -75,6 +75,20 @@ const userSkillsUpdate = asyncHandler(async (req, res) => {
   );
   //? return res
   return res.status(200).json(new apiResponse(200, "user skills update successful", user));
+});
+
+// user onboarding change
+const userOnboardingUpdate = asyncHandler(async (req, res) => {
+  const { onboarding } = req.query;
+  if (!onboarding) {
+    throw new apiError(400, "onboarding query parameter is required", "VALIDATION");
+  }; 
+  // update user 
+  await userModel.findByIdAndUpdate(req.user?._id,{
+    isOnboarding: false
+  })
+  //? return res
+  return res.status(200).json(new apiResponse(200, "user onboarding completed"));
 });
 
 // delete user after 30days
@@ -92,4 +106,4 @@ const deleteUserAccount = asyncHandler(async (req, res) => {
   //? return res
   return res.status(200).json(new apiResponse(200, "profile deleted! after 30 days.", null));
 });
-export { getUserProfile, deleteUserAccount, userProfileUpdate,userSkillsUpdate };
+export { getUserProfile, deleteUserAccount, userProfileUpdate, userSkillsUpdate,userOnboardingUpdate };
