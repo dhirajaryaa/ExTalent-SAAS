@@ -66,7 +66,7 @@ const currentLoginUser = asyncHandler(async (req, res) => {
     throw new apiError(401, "unAuthorized Request!");
   }
   // get user info with remove sensitive info
-  const loginUser = await userModel.findById(req.user?._id).select("-githubId -githubToken -refreshToken -isDeleted");
+  const loginUser = await userModel.findById(req.user?._id).select("-githubId -githubToken -refreshToken -isDeleted -expireAt");
   if (!loginUser) {
     throw new apiError(404, "user not found!");
   }

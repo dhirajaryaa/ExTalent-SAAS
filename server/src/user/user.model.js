@@ -51,6 +51,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    expireAt: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
