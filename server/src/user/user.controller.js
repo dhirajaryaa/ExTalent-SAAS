@@ -1,7 +1,9 @@
+import z from "zod";
 import asyncHandler from "../utils/asyncHandler.js";
 import apiError from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
 import userModel from "./user.model.js";
+import updateProfileSchema from "./user.schema.js";
 
 // user profile
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -29,6 +31,26 @@ const getUserProfile = asyncHandler(async (req, res) => {
   return res.status(200).json(new apiResponse(200, "get user profile successful", loginUser));
 });
 
+// user profile edit
+const userProfileUpdate = asyncHandler(async (req, res) => {
+  if (!req.body) {
+    throw new apiError(400, "no updatable data found!");
+  }
+  // validate user input
+  const validate = updateProfileSchema.safeParse(req.body);
+  if (!validate.success) {
+    const message = z.prettifyError(validate.error);
+    throw new apiError(400, message, "VALIDATION");
+  }
+  // update on db
+  const user = await userModel.findByIdAndUpdate(req.user?._id, validate?.data, {
+    new: true,
+    select: "-githubId -githubToken -refreshToken -isOnboarding -isDeleted -expireAt",
+  });
+  //? return res
+  return res.status(200).json(new apiResponse(200, "profile update successful", user));
+});
+
 // delete user after 30days
 const deleteUserAccount = asyncHandler(async (req, res) => {
   if (!req.user) {
@@ -44,5 +66,4 @@ const deleteUserAccount = asyncHandler(async (req, res) => {
   //? return res
   return res.status(200).json(new apiResponse(200, "profile deleted! after 30 days.", null));
 });
-
-export { getUserProfile, deleteUserAccount };
+export { getUserProfile, deleteUserAccount, userProfileUpdate };
