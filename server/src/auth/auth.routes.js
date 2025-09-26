@@ -1,5 +1,6 @@
 import express from "express";
-import { githubOauthLogin } from "./auth.controller.js";
+import { githubOauthLogin, userLogout } from "./auth.controller.js";
+import authChecker from "../middlewares/auth.middleware.js";
 import passport from "../config/passport.js";
 const router = express.Router();
 
@@ -11,5 +12,8 @@ router.get(
   passport.authenticate("github", { failureMessage: "Internal Server Error!",session:false }),
   githubOauthLogin
 );
+//? auth middleware - protect routes
+// logout user 
+router.post("/logout",authChecker,userLogout)
 
 export default router;
