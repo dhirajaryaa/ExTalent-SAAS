@@ -5,7 +5,7 @@ import { jwt_secret } from "../config/env.js";
 
 const authChecker = asyncHandler(async (req, res, next) => {
   // get token
-  const incomingToken = req.cookie.accessToken || req.headers.Authorization?.replace("Bearer ", "");
+  const incomingToken = req.cookies.accessToken || req.headers.authorization?.replace("Bearer ", "");
   if (!incomingToken) {
     throw new apiError(
       401,
