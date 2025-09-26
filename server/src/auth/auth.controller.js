@@ -33,6 +33,10 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
   if (!(accessToken && refreshToken)) {
     throw new apiError(500, "Something went wrong!");
   }
+  // save token in db 
+  await userModel.findByIdAndUpdate(user._id,{
+    refreshToken
+  })
   //   set cookies
   res.cookie("accessToken", accessToken, cookiesOptions);
   res.cookie("refreshToken", refreshToken, cookiesOptions);
