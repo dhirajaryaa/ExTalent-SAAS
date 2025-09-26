@@ -1,5 +1,5 @@
 import express from "express";
-import { githubOauthLogin, userLogout } from "./auth.controller.js";
+import { currentLoginUser, githubOauthLogin, userLogout } from "./auth.controller.js";
 import authChecker from "../middlewares/auth.middleware.js";
 import passport from "../config/passport.js";
 const router = express.Router();
@@ -15,5 +15,7 @@ router.get(
 //? auth middleware - protect routes
 // logout user 
 router.post("/logout",authChecker,userLogout)
+// current login user 
+router.get("/me",authChecker,currentLoginUser)
 
 export default router;

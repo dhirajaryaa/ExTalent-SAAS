@@ -33,10 +33,10 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
   if (!(accessToken && refreshToken)) {
     throw new apiError(500, "Something went wrong!");
   }
-  // save token in db 
-  await userModel.findByIdAndUpdate(user._id,{
-    refreshToken
-  })
+  // save token in db
+  await userModel.findByIdAndUpdate(user._id, {
+    refreshToken,
+  });
   //   set cookies
   res.cookie("accessToken", accessToken, cookiesOptions);
   res.cookie("refreshToken", refreshToken, cookiesOptions);
@@ -46,9 +46,9 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
 
 // logout
 const userLogout = asyncHandler(async (req, res) => {
-  if(!req.user){
-    throw new apiError(401,"unAuthorized Request!")
-  };
+  if (!req.user) {
+    throw new apiError(401, "unAuthorized Request!");
+  }
   // remove refresh token from db
   await userModel.findByIdAndUpdate(req.user?._id, {
     refreshToken: "",
@@ -56,8 +56,22 @@ const userLogout = asyncHandler(async (req, res) => {
   //   clear cookies
   res.clearCookie("accessToken", "", cookiesOptions);
   res.clearCookie("refreshToken", "", cookiesOptions);
-  //? return redirect
+  //? return res
   return res.status(200).json(new apiResponse(200, "user logout successful"));
 });
 
-export { githubOauthLogin, userLogout };
+// current login user
+const currentLoginUser = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    throw new apiError(401, "unAuthorized Request!");
+  }
+  // get user info with remove sensitive info
+  const loginUser = await userModel.findById(req.user?._id).select("-githubId -githubToken -refreshToken -isDeleted -isOnboarding");
+  if (!loginUser) {
+    throw new apiError(404, "user not found!");
+  }
+  //? return res
+  return res.status(200).json(new apiResponse(200, "login user profile successful", loginUser));
+});
+
+export { githubOauthLogin, userLogout, currentLoginUser };

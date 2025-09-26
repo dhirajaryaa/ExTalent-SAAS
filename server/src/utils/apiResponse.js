@@ -2,8 +2,8 @@ class apiResponse {
   constructor(
     statusCode = 200,
     message = "req successful",
-    name = "Success",
     data = null,
+    name = "Success",
     isError = false,
     isSuccess = true
   ) {
