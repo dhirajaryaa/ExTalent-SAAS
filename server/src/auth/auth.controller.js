@@ -46,7 +46,7 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
 
 // logout
 const userLogout = asyncHandler(async (req, res) => {
-  if(req.user){
+  if(!req.user){
     throw new apiError(401,"unAuthorized Request!")
   };
   // remove refresh token from db
