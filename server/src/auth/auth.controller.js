@@ -1,0 +1,43 @@
+import asyncHandler from "../utils/asyncHandler.js";
+import apiError from "../utils/apiError.js";
+import apiResponse from "../utils/apiResponse.js";
+import userModel from "../user/user.model.js";
+import generateAccessAndRefreshToken from "../lib/generateToken.js";
+import { client_url,cookiesOptions } from "../config/env.js";
+
+const githubOauthLogin = asyncHandler(async (req, res) => {
+  const { _json: profile } = req.user;
+  const { accessToken: githubToken } = req.authInfo;
+  if (!profile) {
+    throw new apiError(404, "user profile not found!", "VALIDATION");
+  };
+  // find user
+  let user = await userModel.findOne({ githubId: profile?.node_id });
+  if (!user) {
+    // create new user
+    user = await userModel.create({
+      name: profile.name,
+      email: profile.email,
+      avatar: profile.avatar_url,
+      githubUsername: profile.login,
+      githubId: profile.node_id,
+      bio: profile.bio,
+      location: profile.location,
+      blogLink: profile.blog,
+      githubToken,
+    });
+  };
+
+//   token generate 
+  const {accessToken,refreshToken} = await generateAccessAndRefreshToken(user);
+  if(!(accessToken && refreshToken)){
+      throw new apiError(500,"Something went wrong!")
+  };
+//   set cookies 
+res.cookie('accessToken',accessToken,cookiesOptions);
+res.cookie('refreshToken',refreshToken,cookiesOptions);
+  //? return redirect
+  return res.status(200).redirect(`${client_url}/dashboard`);
+});
+
+export { githubOauthLogin };
