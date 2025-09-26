@@ -14,8 +14,8 @@ const _config = {
   github_client_id: process.env.GITHUB_CLIENT_ID,
   github_client_secret: process.env.GITHUB_CLIENT_SECRET,
   github_oauth_redirect_url: process.env.GITHUB_OAUTH_REDIRECT_URL,
-  // cors 
-  origin: process.env.ORIGIN
+  // cors
+  origin: process.env.ORIGIN,
 };
 
 export const {
@@ -31,5 +31,12 @@ export const {
   github_client_id,
   github_client_secret,
   github_oauth_redirect_url,
-  origin
+  origin,
 } = _config;
+
+// cookies options
+export const cookiesOptions = {
+  httpOnly: true,
+  secure: node_env === "production" ? true : false,
+  sameSite: "strict",
+};
