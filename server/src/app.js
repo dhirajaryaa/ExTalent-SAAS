@@ -20,7 +20,9 @@ app.use(passport.initialize())
 
 // setup routers
 import authRouter from "./auth/auth.routes.js";
-app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/auth",authRouter); // auth roues
+import userRouter from "./user/user.routes.js";
+app.use("/api/v1/users",userRouter); //user routes
 
 //! setup error middleware
 app.use(errorMiddleware);
