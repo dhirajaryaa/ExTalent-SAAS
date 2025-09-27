@@ -1,4 +1,4 @@
-import pdfParser from "pdf-parse";
+import pdf from "pdf-parse";
 import axios from "axios";
 
 export const extractTextFromPDF = async (url) => {

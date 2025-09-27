@@ -1,4 +1,4 @@
-export const resumeEvaluationPrompt = `
+const resumeEvaluationPrompt = `
 You are an expert career evaluator and resume parser. 
 Your task is to carefully analyze raw resume text and extract structured user information useful for professional evaluation.
 
@@ -62,8 +62,12 @@ Return structured data with the following fields:
 Rules:
 - Extract only what is present in the resume text, don’t hallucinate.
 - Dates should be normalized as YYYY-MM.
-- Skills must be categorized correctly (programming languages, tools, soft skills).
+- Skills must be categorized correctly (programming languages, tools, soft skills) with score [min-0,max-100].
 - Keep arrays empty if no data is found.
 - links extract username, if username given so generate related site url
 - Preserve exact phrasing for responsibilities and achievements.
+
+User_Resume_Text: """{{RESUME_TEXT}}"""
 `;
+
+export default resumeEvaluationPrompt
