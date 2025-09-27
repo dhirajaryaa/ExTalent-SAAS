@@ -16,13 +16,15 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(passport.initialize())
+app.use(passport.initialize());
 
 // setup routers
 import authRouter from "./auth/auth.routes.js";
-app.use("/api/v1/auth",authRouter); // auth roues
+app.use("/api/v1/auth", authRouter); // auth routes
 import userRouter from "./user/user.routes.js";
-app.use("/api/v1/users",userRouter); //user routes
+app.use("/api/v1/users", userRouter); //user profile routes
+import profileEvaluation from "./evaluation/evaluation.routes.js";
+app.use("/api/v1/evaluations", profileEvaluation); //user evaluation routes
 
 //! setup error middleware
 app.use(errorMiddleware);
