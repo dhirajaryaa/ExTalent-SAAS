@@ -19,7 +19,9 @@ const _config = {
   // cloudinary 
   cloudinary_secret_key: process.env.CLOUDINARY_SECRET_KEY,
   cloudinary_cloud_id: process.env.CLOUDINARY_CLOUD_ID,
-  cloudinary_cloud_name:process.env.CLOUDINARY_CLOUD_NAME
+  cloudinary_cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+  // open router open ai
+  open_ai_key:process.env.OPEN_AI_KEY
 };
 
 export const {
@@ -38,8 +40,9 @@ export const {
   origin,
   cloudinary_cloud_id,
   cloudinary_cloud_name,
-  cloudinary_secret_key
-} = _config;
+  cloudinary_secret_key,
+  open_ai_key
+} = Object.freeze(_config);
 
 // cookies options
 export const cookiesOptions = {
