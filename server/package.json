@@ -34,6 +34,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.2",
     "multer": "^2.0.2",
+    "openai": "^5.23.1",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "pdf-parse": "^1.1.1",
