@@ -7,7 +7,7 @@ import { client_url, cookiesOptions } from "../config/env.js";
 
 const githubOauthLogin = asyncHandler(async (req, res) => {
   const { _json: profile } = req.user;
-  const { accessToken: githubToken } = req.authInfo;
+  const token = req.authInfo;
   if (!profile) {
     throw new apiError(404, "user profile not found!", "VALIDATION");
   }
@@ -24,7 +24,7 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
       bio: profile.bio,
       location: profile.location,
       blogLink: profile.blog,
-      githubToken,
+      githubToken: token,
     });
   }
 
