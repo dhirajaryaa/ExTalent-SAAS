@@ -16,6 +16,10 @@ const _config = {
   github_oauth_redirect_url: process.env.GITHUB_OAUTH_REDIRECT_URL,
   // cors
   origin: process.env.ORIGIN,
+  // cloudinary 
+  cloudinary_secret_key: process.env.CLOUDINARY_SECRET_KEY,
+  cloudinary_cloud_id: process.env.CLOUDINARY_CLOUD_ID,
+  cloudinary_cloud_name:process.env.CLOUDINARY_CLOUD_NAME
 };
 
 export const {
@@ -32,6 +36,9 @@ export const {
   github_client_secret,
   github_oauth_redirect_url,
   origin,
+  cloudinary_cloud_id,
+  cloudinary_cloud_name,
+  cloudinary_secret_key
 } = _config;
 
 // cookies options
