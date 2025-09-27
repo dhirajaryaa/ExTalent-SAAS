@@ -10,7 +10,7 @@ import {
 cloudinary.config({
   cloud_name: cloudinary_cloud_name,
   api_secret: cloudinary_secret_key,
-  account_id: cloudinary_cloud_id,
+  api_key: cloudinary_cloud_id,
 });
 
 // upload on cloudinary
