@@ -1,6 +1,14 @@
 import express from "express";
-import { deleteUserAccount, getUserProfile, userOnboardingUpdate, userProfileUpdate, userSkillsUpdate } from "./user.controller.js";
+import {
+  deleteUserAccount,
+  getUserProfile,
+  uploadUserResume,
+  userOnboardingUpdate,
+  userProfileUpdate,
+  userSkillsUpdate,
+} from "./user.controller.js";
 import authChecker from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = express.Router();
 
@@ -12,6 +20,8 @@ router.put("/profile", authChecker, userProfileUpdate);
 router.patch("/profile/skills", authChecker, userSkillsUpdate);
 // onboarding update
 router.patch("/profile/onboarding", authChecker, userOnboardingUpdate);
+// onboarding update
+router.post("/profile/resume", authChecker, upload.single("resume"), uploadUserResume);
 // delete user account after 30days
 router.delete("/profile", authChecker, deleteUserAccount);
 

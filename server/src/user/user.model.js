@@ -1,16 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 
-const skillsSchema = new Schema({
-  name:{
-    type:String,
-    required: true
+const skillsSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    score: {
+      type: Number,
+      default: 0,
+      max: 100,
+    },
   },
-  score:{
-    type:Number,
-    default: 0,
-    max: 100
-  }
-},{_id:false})
+  { _id: false }
+);
 
 const userSchema = new Schema(
   {
@@ -67,7 +70,17 @@ const userSchema = new Schema(
       type: Date,
       default: null,
     },
-    skills : [skillsSchema]
+    skills: [skillsSchema],
+    resume: {
+      url: {
+        type: String,
+        default: "",
+      },
+      publicId: {
+        type: String,
+        default: null,
+      },
+    },
   },
   { timestamps: true }
 );
