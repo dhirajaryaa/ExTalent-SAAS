@@ -5,7 +5,9 @@ import userModal from "../user/user.model.js";
 import evaluationModal from "./evaluation.model.js";
 import { extractTextFromPDF } from "../services/resume.service.js";
 import { parseWithAI } from "../services/openAI.service.js";
+import githubInfoExtractor from "../services/github.service.js";
 import resumeEvaluationPrompt from "../prompt/resume.prompt.js";
+import githubEvaluationPrompt from "../prompt/github.prompt.js";
 
 const profileResumeEvaluate = asyncHandler(async (req, res) => {
   //get resume
@@ -33,4 +35,31 @@ const profileResumeEvaluate = asyncHandler(async (req, res) => {
     .json(new apiResponse(200, "user resume evaluation successful", evaluation));
 });
 
-export { profileResumeEvaluate };
+const profileGithubEvaluate = asyncHandler(async (req, res) => {
+  // get user info
+  const user = await userModal.findById(req.user._id);
+  // query graphql request to github
+  const github = await githubInfoExtractor(user?.githubToken);
+  if (!github) {
+    throw new apiError(500, "failed to fetch user github info. please try again");
+  }
+  // send llm
+  const prompt = githubEvaluationPrompt.replace("{{GITHUB_INFO}}", JSON.stringify(github));
+  const ai = await parseWithAI(prompt);
+  const genAIRes = JSON.parse(ai);
+  // save on db
+  await userModal.findByIdAndUpdate(req.user._id, { skills: genAIRes.skills || [] });
+  const evaluation = await evaluationModal.findOneAndUpdate(
+    { userId: req.user._id },
+    {
+      userId: req.user._id,
+      genAIRes,
+    }
+  );
+  // return res
+  return res
+    .status(200)
+    .json(new apiResponse(200, "user github evaluation successful", evaluation));
+});
+
+export { profileResumeEvaluate, profileGithubEvaluate };
