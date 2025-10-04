@@ -21,7 +21,7 @@ const _config = {
   cloudinary_cloud_id: process.env.CLOUDINARY_CLOUD_ID,
   cloudinary_cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
   // open router open ai
-  open_ai_key:process.env.OPEN_AI_KEY
+  groq_api_key:process.env.GROQ_API_KEY
 };
 
 export const {
@@ -41,7 +41,7 @@ export const {
   cloudinary_cloud_id,
   cloudinary_cloud_name,
   cloudinary_secret_key,
-  open_ai_key
+  groq_api_key
 } = Object.freeze(_config);
 
 // cookies options

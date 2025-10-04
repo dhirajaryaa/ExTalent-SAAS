@@ -1,13 +1,9 @@
 import OpenAI from "openai";
-import { open_ai_key } from "../config/env.js";
+import Groq from "groq-sdk";
+import { groq_api_key } from "../config/env.js";
 
-const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: open_ai_key,
-  //     defaultHeaders: {
-  //     "HTTP-Referer": "<YOUR_SITE_URL>", //*later save on production
-  //     "X-Title": "<YOUR_SITE_NAME>", //*later save on production
-  //   },
+const groqAi = new Groq({
+  apiKey: groq_api_key,
 });
 
 async function parseWithAI(prompt, systemPrompt, config = {}) {
@@ -36,11 +32,8 @@ async function main(prompt, systemPrompt, config = {}) {
       content: prompt,
     });
   }
-  const completion = await openai.chat.completions.create({
- model: 'openai/gpt-oss-20b:free',
-   provider: {
-      sort: "latency",
-  },
+  const completion = await groqAi.chat.completions.create({
+    model: "openai/gpt-oss-20b",
     messages,
     response_format: { type: "json_object" },
     ...config,
