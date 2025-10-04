@@ -63,6 +63,10 @@ const jobSchema = new Schema(
       type: String,
       required: true,
     },
+    readyToApply: {
+      type: Boolean,
+      default: false,
+    },
     matchSkills: [skillsSchema],
     missingSkills: [skillsSchema],
     recommendations: [String],

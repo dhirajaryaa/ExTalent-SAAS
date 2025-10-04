@@ -10,7 +10,7 @@ Return structured data with the following fields:
   "scanSummary": "",           //overall job scan report summary under 1-2 line.
   "matchSkills": [
     {
-      "name": "",             // skill name
+      "skill": "",             // skill name
       "score": 0              // importance or relevance of this skill for the job (0–100)
     }
   ],
