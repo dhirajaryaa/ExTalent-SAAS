@@ -18,7 +18,7 @@ const profileResumeEvaluate = asyncHandler(async (req, res) => {
     throw new apiError(400, "failed to parse resume! try again");
   }
   // prompt setup
-  const prompt = resumeEvaluationPrompt.replace("{{RESUME_TEXT}}", rowText);
+  const prompt = resumeEvaluationPrompt.replace("{{RESUME_TEXT}}", rowText);  
   //* send to llm
   const aiRes = await parseWithAI(prompt);
   const genAIRes = JSON.parse(aiRes);

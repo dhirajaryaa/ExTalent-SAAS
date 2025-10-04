@@ -37,8 +37,10 @@ async function main(prompt, systemPrompt, config = {}) {
     });
   }
   const completion = await openai.chat.completions.create({
-    model: "nvidia/nemotron-nano-9b-v2:free",
-    temperature: 0.4,
+ model: 'openai/gpt-oss-20b:free',
+   provider: {
+      sort: "latency",
+  },
     messages,
     response_format: { type: "json_object" },
     ...config,

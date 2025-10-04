@@ -31,7 +31,7 @@ const experienceSchema = new mongoose.Schema(
     },
     endDate: {
       type: Date,
-      required: true,
+      default: '',
     },
     responsibilities: [String],
   },
