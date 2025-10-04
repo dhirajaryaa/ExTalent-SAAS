@@ -23,8 +23,10 @@ import authRouter from "./auth/auth.routes.js";
 app.use("/api/v1/auth", authRouter); // auth routes
 import userRouter from "./user/user.routes.js";
 app.use("/api/v1/users", userRouter); //user profile routes
-import profileEvaluation from "./evaluation/evaluation.routes.js";
-app.use("/api/v1/evaluations", profileEvaluation); //user evaluation routes
+import profileEvaluationRoutes from "./evaluation/evaluation.routes.js";
+app.use("/api/v1/evaluations", profileEvaluationRoutes); //user evaluation routes
+import jobRoutes from "./job/job.routes.js";
+app.use("/api/v1/jobs", jobRoutes); //job scan routes
 
 //! setup error middleware
 app.use(errorMiddleware);
