@@ -16,8 +16,7 @@ export const updateProfileSchema = z.object({
   avatar: z.string().url().optional(),
   bio: z.string().min(1).max(150).optional(),
   location: z.string().min(1).optional(),
-  blogLink: z.string().url().optional(),
-  skills: z.array(skillsSchema).optional(),
+  blogLink: z.string().url().optional()
 }).refine((data) => Object.keys(data).length > 0, { message: "No updatable data found!" });
 
 

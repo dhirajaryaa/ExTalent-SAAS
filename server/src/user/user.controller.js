@@ -3,6 +3,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import apiError from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
 import userModel from "./user.model.js";
+import evolutionModal from "../evaluation/evaluation.model.js"
 import { resumeFileSchema, updateProfileSchema, userSkillsSchema } from "./user.schema.js";
 import { removeFromCloudinary, uploadOnCloudinary } from "../services/cloudinary.service.js";
 
@@ -64,14 +65,14 @@ const userSkillsUpdate = asyncHandler(async (req, res) => {
     throw new apiError(400, message, "VALIDATION");
   }
   // update on db
-  const user = await userModel.findByIdAndUpdate(
-    req.user?._id,
+  const user = await evolutionModal.findOneAndUpdate(
+    {userId:req.user?._id},
     {
       $set: validate?.data,
     },
     {
       new: true,
-      select: "+name +skills +_id +email +avatar",
+      select: "+userId  +skills +experience +soft_skills",
     }
   );
   //? return res

@@ -70,7 +70,6 @@ const userSchema = new Schema(
       type: Date,
       default: null,
     },
-    skills: [skillsSchema],
     resume: {
       url: {
         type: String,
