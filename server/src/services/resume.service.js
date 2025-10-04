@@ -11,7 +11,8 @@ export const extractTextFromPDF = async (url) => {
     // Parse the PDF buffer
     const data = await pdf(response.data);
     // Optional: Clean up the text
-    const cleanedText = data.text.replace(/\s+/g, " ").trim();
+    const cleanedText = data.text.replace(/\n+/g, "").replace(/\s+/g, " ").trim();
+
     return cleanedText;
   } catch (err) {
     console.error("Failed to parse resume:", err);

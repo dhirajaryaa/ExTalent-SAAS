@@ -26,8 +26,11 @@ const profileResumeEvaluate = asyncHandler(async (req, res) => {
   // save on db
   const evaluation = await evaluationModal.create({
     userId: req.user._id,
-    pdfRowText: JSON.stringify(rowText),
-    genAIRes,
+    pdfRowText: rowText,
+    skills: genAIRes?.skills || [],
+    experience: genAIRes?.experience || [],
+    userSummary: genAIRes?.userSummary || "",
+    soft_skills: genAIRes?.soft_skills || [],
   });
   // return res
   return res
