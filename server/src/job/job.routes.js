@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getJobs, scanNewJob } from "./job.controller.js";
+import { getJobs, getJobWithId, scanNewJob } from "./job.controller.js";
 import authChecker from "../middlewares/auth.middleware.js";
 const router = Router();
 
@@ -7,5 +7,7 @@ const router = Router();
 router.post("/scan", authChecker, scanNewJob);
 // get jobs 
 router.get("/", authChecker, getJobs);
+// get job with id
+router.get("/:jobId", authChecker, getJobWithId);
 
 export default router;

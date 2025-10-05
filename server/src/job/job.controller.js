@@ -107,4 +107,15 @@ const getJobs = asyncHandler(async (req, res) => {
   );
 });
 
-export { scanNewJob, getJobs };
+const getJobWithId = asyncHandler(async (req, res) => {
+  //  get id and convert in valid id
+  const jobId = new mongoose.Types.ObjectId(req.params.jobId);
+
+  const job = await jobModal.aggregate([{ $match: { userId: req.user._id, _id: jobId } }]);
+  if (!job) {
+    throw new apiError(404, "job not found!");
+  }
+  return res.status(200).json(new apiResponse(200, "all job by user fetched successfully", job));
+});
+
+export { scanNewJob, getJobs, getJobWithId };
