@@ -1,4 +1,5 @@
 import z from "zod";
+import mongoose from "mongoose";
 import asyncHandler from "../utils/asyncHandler.js";
 import apiError from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
@@ -35,7 +36,7 @@ const scanNewJob = asyncHandler(async (req, res) => {
   const job = await jobModal.create({
     jobId: validate.data.jobId,
     url: validate.data.url,
-    companyName : validate.data.companyName,
+    companyName: validate.data.companyName,
     userId: req.user._id,
     ...aiRes,
   });
@@ -45,4 +46,65 @@ const scanNewJob = asyncHandler(async (req, res) => {
   return res.status(201).json(new apiResponse(201, "job scanned successfully", job));
 });
 
-export { scanNewJob };
+const getJobs = asyncHandler(async (req, res) => {
+  // get page and limit
+  const pageNo = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  // get jobs
+  if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
+    throw new apiError(400, "Invalid user id", "VALIDATION");
+  }
+  const jobs = await jobModal.aggregate([
+    {
+      $match: { userId: req.user._id }, // match user id
+    },
+    {
+      $sort: { createdAt: -1 }, // latest first
+    },
+    {
+      $project: {
+        _id: 1,
+        jobId: 1,
+        url: 1,
+        companyName: 1,
+        title: 1,
+        savedJob: 1,
+        score: 1,
+      }, // project min filed
+    },
+  ]);
+  const totalJobs = await jobModal.aggregate([
+    {
+      $group: {
+        // total jobs and saved jobs count
+        _id: null,
+        totalDocs: { $sum: 1 },
+        totalSavedJobs: {
+          $sum: {
+            $cond: [{ $eq: ["$savedJob", true] }, 1, 0],
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0, // remove _id
+        totalDocs: 1,
+        totalSavedJobs: 1,
+      },
+    },
+  ]);
+
+  if (!jobs) {
+    throw new apiError(404, "jobs not found!");
+  }
+  return res.status(200).json(
+    new apiResponse(200, "all job by user fetched successfully", {
+      totalJobs: totalJobs[0].totalDocs,
+      totalSavedJobs: totalJobs[0].total,
+      jobs,
+    })
+  );
+});
+
+export { scanNewJob, getJobs };
