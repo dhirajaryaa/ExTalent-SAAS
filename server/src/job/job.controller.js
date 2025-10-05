@@ -118,4 +118,20 @@ const getJobWithId = asyncHandler(async (req, res) => {
   return res.status(200).json(new apiResponse(200, "all job by user fetched successfully", job));
 });
 
-export { scanNewJob, getJobs, getJobWithId };
+const savedJobs = asyncHandler(async (req, res) => {
+  //  get id and convert in valid id
+  const jobId = new mongoose.Types.ObjectId(req.params.jobId);
+
+  const job = await jobModal.findOneAndUpdate(
+    { _id: jobId, userId: req.user._id },
+    {
+      savedJob: true,
+    }
+  );
+  if (!job) {
+    throw new apiError(404, "job not found!");
+  }
+  return res.status(200).json(new apiResponse(200, "job saved sussussfull", job));
+});
+
+export { scanNewJob, getJobs, getJobWithId, savedJobs };
