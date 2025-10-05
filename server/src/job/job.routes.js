@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getJobs, getJobWithId, savedJobs, scanNewJob } from "./job.controller.js";
+import { deleteJob, getJobs, getJobWithId, savedJobs, scanNewJob } from "./job.controller.js";
 import authChecker from "../middlewares/auth.middleware.js";
 const router = Router();
 
@@ -11,5 +11,7 @@ router.get("/", authChecker, getJobs);
 router.get("/:jobId", authChecker, getJobWithId);
 // save job with id
 router.put("/:jobId", authChecker, savedJobs);
+// delete job with id
+router.delete("/:jobId", authChecker, deleteJob);
 
 export default router;
