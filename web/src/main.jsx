@@ -1,9 +1,14 @@
-import { StrictMode } from "react";
+import { Suspense,StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { Home, LoginPage, NotFound } from "./pages";
+import { Dashboard, Home, LoginPage, NotFound } from "./pages";
+import { Loading } from "./components/custom";
+
+// query client create
+const queryClient = new QueryClient();
 
 const appRouter = createBrowserRouter([
   {
@@ -15,7 +20,13 @@ const appRouter = createBrowserRouter([
     element: <LoginPage />, // login page
   },
   {
-    element: <App />, // protected routes
+    element: <App />, //! protected routes
+    children: [
+      {
+        path: "dashboard", //* dashboard page
+        element: <Dashboard />,
+      },
+    ],
   },
   {
     path: "*",
@@ -25,6 +36,10 @@ const appRouter = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={appRouter} />
+    <QueryClientProvider client={queryClient} >
+      <Suspense fallback={<Loading />}>
+      <RouterProvider router={appRouter} />
+      </Suspense>
+    </QueryClientProvider>
   </StrictMode>
 );
