@@ -77,8 +77,8 @@ const currentLoginUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(
       new apiResponse(200, "login user profile successful", {
-        ...loginUser,
-        _accessToken: req.cookies?.accessToken || null,
+        user: loginUser,
+        accessToken: req.cookies?.accessToken || null,
       })
     );
 });
