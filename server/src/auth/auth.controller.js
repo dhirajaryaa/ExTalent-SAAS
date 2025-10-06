@@ -66,12 +66,21 @@ const currentLoginUser = asyncHandler(async (req, res) => {
     throw new apiError(401, "unAuthorized Request!");
   }
   // get user info with remove sensitive info
-  const loginUser = await userModel.findById(req.user?._id).select("-githubId -githubToken -refreshToken -isDeleted -expireAt");
+  const loginUser = await userModel
+    .findById(req.user?._id)
+    .select("-githubId -githubToken -refreshToken -isDeleted -expireAt");
   if (!loginUser) {
     throw new apiError(404, "user not found!");
   }
   //? return res
-  return res.status(200).json(new apiResponse(200, "login user profile successful", loginUser));
+  return res
+    .status(200)
+    .json(
+      new apiResponse(200, "login user profile successful", {
+        ...loginUser,
+        _accessToken: req.cookies?.accessToken || null,
+      })
+    );
 });
 
 export { githubOauthLogin, userLogout, currentLoginUser };
