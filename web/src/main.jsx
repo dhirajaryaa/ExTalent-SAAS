@@ -3,12 +3,16 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { Home, NotFound } from "./pages";
+import { Home, LoginPage, NotFound } from "./pages";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Home />, // landing page
+  },
+  {
+    path: "login",
+    element: <LoginPage />, // login page
   },
   {
     element: <App />, // protected routes

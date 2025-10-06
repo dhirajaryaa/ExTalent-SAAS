@@ -74,7 +74,7 @@ function Home() {
 
   return (
     <main className="w-full min-h-screen  bg-gradient-to-b from-slate-50 to-primary/30 ">
-      <section className="w-full h-full max-w-6xl mx-auto relative">
+      <section className="w-full h-full max-w-3xl mx-auto relative">
         <Navbar />
         {/* hero  */}
         <div
