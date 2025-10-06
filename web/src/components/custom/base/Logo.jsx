@@ -3,7 +3,7 @@ import LogoImg from "@/assets/logo.svg";
 
 function Logo({ variant = "default" }) {
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-2 w-fit">
       <img
         src={LogoImg}
         alt="logo"
