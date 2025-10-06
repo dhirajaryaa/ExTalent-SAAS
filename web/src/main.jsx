@@ -1,4 +1,4 @@
-import { Suspense,StrictMode } from "react";
+import { Suspense, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Dashboard, Home, LoginPage, NotFound } from "./pages";
 import { Loading } from "./components/custom";
+import authChecker from "./lib/authChecker";
 
 // query client create
 const queryClient = new QueryClient();
@@ -20,7 +21,9 @@ const appRouter = createBrowserRouter([
     element: <LoginPage />, // login page
   },
   {
+    loader: authChecker,
     element: <App />, //! protected routes
+    hydrateFallbackElement: <Loading />,
     children: [
       {
         path: "dashboard", //* dashboard page
@@ -36,9 +39,9 @@ const appRouter = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient} >
+    <QueryClientProvider client={queryClient}>
       <Suspense fallback={<Loading />}>
-      <RouterProvider router={appRouter} />
+        <RouterProvider router={appRouter} />
       </Suspense>
     </QueryClientProvider>
   </StrictMode>
