@@ -12,7 +12,7 @@ function Navbar() {
 
         <Button className="rounded-lg" asChild><Link to={"/login"}>Get Started</Link></Button>
         <Button  asChild variant="outline" size="icon" className={"rounded-full"}>
-        <a href="https://github.com/dhirajaryaa/extalent" target="_blank">
+        <a href="https://github.com/dhirajaryaa/ExTalent-SAAS" target="_blank">
           <Github />
            </a>
         </Button>
