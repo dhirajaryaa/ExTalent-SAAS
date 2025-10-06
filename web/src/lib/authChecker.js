@@ -1,8 +1,8 @@
 import api from "@/api/baseApi";
-import useAuthStore from "@/store/authStore";
+import authStore from "@/store/authStore";
 
 const authChecker = async () => {
-  const { setUser, removeUser } = useAuthStore.getState();
+  const { setUser, removeUser } = authStore.getState();
   try {
     const authUser = await api.get("/auth/me");
     if (authUser.data?.isSuccess) {
