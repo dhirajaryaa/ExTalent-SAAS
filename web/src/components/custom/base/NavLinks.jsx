@@ -1,13 +1,15 @@
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
+import uiStore from '@/store/uiStore';
 import { Link ,useLocation} from 'react-router'
 
 function NavLinks({links}) {
     const { pathname } = useLocation();
+    const {activePage,setActivePage} = uiStore()
   return (
    <SidebarMenu className={"mt-10"}>
           {links.map((link) => (
             <SidebarMenuItem key={link.title}>
-              <Link to={link.url}>
+              <Link to={link.url} onClick={()=>setActivePage(link.title)}>
                 <SidebarMenuButton
                   asChild
                   tooltip={link.name}
