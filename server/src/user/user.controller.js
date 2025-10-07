@@ -16,42 +16,45 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   // get user info with remove sensitive info
   const [user] = await userModel.aggregate([
-    {
-      $match: {
-        _id: new mongoose.Types.ObjectId(req.user._id),
-        isDeleted: false,
-      },
+  {
+    $match: {
+      _id: new mongoose.Types.ObjectId(req.user._id),
+      isDeleted: false,
     },
-    {
-      $lookup: {
-        from: "evaluations",
-        localField: "_id",
-        foreignField: "userId",
-        as: "evaluation",
-      },
+  },
+  {
+    $lookup: {
+      from: "evaluations",
+      localField: "_id",
+      foreignField: "userId",
+      as: "evaluation",
     },
-    {
-      $unwind: "$evaluation",
+  },
+  {
+    $unwind: {
+      path: "$evaluation",
+      preserveNullAndEmptyArrays: true, // ✅ keep user even if no evaluation
     },
-    {
-      $project: {
-        _id: 1,
-        name: 1,
-        email: 1,
-        blogLink: 1,
-        githubUsername: 1,
-        avatar: 1,
-        bio: 1,
-        location: 1,
-        resume: 1,
-        summary: "$evaluation.userSummary",
-        skills: "$evaluation.skills",
-        experience: "$evaluation.experience",
-        soft_skills: "$evaluation.soft_skills",
-      },
+  },
+  {
+    $project: {
+      _id: 1,
+      name: 1,
+      email: 1,
+      blogLink: 1,
+      githubUsername: 1,
+      avatar: 1,
+      bio: 1,
+      location: 1,
+      resume: 1,
+      summary: { $ifNull: ["$evaluation.userSummary", ""] },
+      skills: { $ifNull: ["$evaluation.skills", []] },
+      experience: { $ifNull: ["$evaluation.experience", []] },
+      soft_skills: { $ifNull: ["$evaluation.soft_skills", []] },
     },
-  ]);
-  // const user = await userModel.findById(req.user?._id);
+  },
+]);
+
   if (!user) {
     throw new apiError(404, "user not found!");
   }
