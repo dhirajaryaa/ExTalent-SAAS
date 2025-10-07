@@ -4,7 +4,8 @@ import { Upload, UserSkills } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
 import authStore from "@/store/authStore";
-import { ArrowRight, Loader2, ArrowLeft } from "lucide-react";
+import { ArrowRight, Loader2, ArrowLeft ,AlertCircleIcon} from "lucide-react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 function Onboarding() {
   const [file, setFile] = useState(null);
@@ -12,8 +13,8 @@ function Onboarding() {
   const navigate = useNavigate();
   const { skipOnboarding, setUser } = authStore.getState();
   const {
-    userResumeUpload: { mutateAsync: resumeUpload, isPending },
-    userProfile: { data: profile, refetch },
+    userResumeUpload: { mutateAsync: resumeUpload, isPending, error, isError },
+    userProfile: { refetch },
   } = useUser(false);
 
   const handleSkipOnboarding = () => {
@@ -27,7 +28,8 @@ function Onboarding() {
       const profile = await refetch();
       setUser(profile?.data);
       setStep(2);
-    }
+    };
+    setFile(null);
   };
 
   return (
@@ -49,10 +51,17 @@ function Onboarding() {
       {/* stepper later on */}
       {/* <div className="flex w-full"></div> */}
       <section className="border-2 border-primary w-full max-w-2xl mx-auto p-6 mt-6 rounded-xl flex flex-col gap-4">
-        {step ? (
+        {step === 1 ? (
           <Upload setStep={setStep} file={file} setFile={setFile} />
         ) : (
           <UserSkills />
+        )}
+        {/* error show  */}
+        {isError && file && (
+          <Alert variant={'destructive'}>
+            <AlertCircleIcon  />
+            <AlertTitle>{error?.response?.data?.message}</AlertTitle>
+          </Alert>
         )}
         <Button
           onClick={handleResumeUpload}
@@ -65,7 +74,7 @@ function Onboarding() {
             </>
           ) : (
             <>
-              Next
+              {step === 1 ? "Next" : "Finish"}
               <ArrowRight size={18} />
             </>
           )}
