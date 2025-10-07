@@ -1,14 +1,13 @@
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent } from "@/components/ui/item";
-import userStore from "@/store/userStore";
 
-function ListSkills() {
-  const { profile } = userStore();
+function ListSkills({profile}) {
+  
   return (
     <Item variant="muted" size="sm" className={"shadow-sm"}>
       <ItemContent>
-        {profile?.skills?.length < 0 ? (
+        {profile.skills.length < 0 ? (
           <Alert>
             <AlertTitle>No Skills Found!</AlertTitle>
           </Alert>
