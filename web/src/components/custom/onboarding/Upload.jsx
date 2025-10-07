@@ -4,7 +4,7 @@ import { useState } from "react";
 import resumeIcon from "@/assets/pdf.svg";
 import { X } from "lucide-react";
 
-function Upload({ setStep,file,setFile,fileRef }) {
+function Upload({ setStep,file,setFile }) {
   //   handle file select change
   const handleFileChange = (e) => {
     e.target.files[0] && setFile(e.target.files[0]);
@@ -36,7 +36,6 @@ function Upload({ setStep,file,setFile,fileRef }) {
             </Button>
             <input
               id="file"
-              ref={fileRef}
               accept="application/pdf"
               type="file"
               className="hidden"

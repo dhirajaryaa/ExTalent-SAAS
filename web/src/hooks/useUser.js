@@ -1,5 +1,5 @@
-import { userOnboardingAPI, userResumeUploadAPI } from "@/api/user.api";
-import { useMutation } from "@tanstack/react-query";
+import { userOnboardingAPI, userProfileAPI, userResumeUploadAPI } from "@/api/user.api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const useUser = (enable) => {
   const userResumeUpload = useMutation({
@@ -11,7 +11,13 @@ const useUser = (enable) => {
     mutationFn: userOnboardingAPI,
     mutationKey: ["userOnboarding"],
   });
-  return { userResumeUpload, userOnboarding };
+
+  const userProfile = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: userProfileAPI,
+    enabled: enable
+  })
+  return { userResumeUpload, userOnboarding ,userProfile};
 };
 
 export default useUser;

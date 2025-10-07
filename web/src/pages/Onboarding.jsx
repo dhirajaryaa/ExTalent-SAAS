@@ -1,22 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Upload } from "@/components/custom";
+import { Upload, UserSkills } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
 import authStore from "@/store/authStore";
 import { ArrowRight, Loader2, ArrowLeft } from "lucide-react";
-import { useRef } from "react";
 
 function Onboarding() {
-  const fileRef = useRef(null);
   const [file, setFile] = useState(null);
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
-  const { skipOnboarding } = authStore.getState();
+  const { skipOnboarding, setUser } = authStore.getState();
   const {
-    userResumeUpload: { mutateAsync:resumeUpload, isPending },
-    userOnboarding: {mutateAsync:onboarding}
-  } = useUser();
+    userResumeUpload: { mutateAsync: resumeUpload, isPending },
+    userProfile: { data: profile, refetch },
+  } = useUser(false);
 
   const handleSkipOnboarding = () => {
     skipOnboarding();
@@ -25,11 +23,11 @@ function Onboarding() {
   // handle Resume  Upload
   const handleResumeUpload = async () => {
     const res = await resumeUpload(file);
-    if(res.isSuccess){
-      
+    if (res.isSuccess) {
+      const profile = await refetch();
+      setUser(profile?.data);
+      setStep(2);
     }
-   
-    navigate("/dashboard");
   };
 
   return (
@@ -52,20 +50,19 @@ function Onboarding() {
       {/* <div className="flex w-full"></div> */}
       <section className="border-2 border-primary w-full max-w-2xl mx-auto p-6 mt-6 rounded-xl flex flex-col gap-4">
         {step ? (
-          <Upload
-            setStep={setStep}
-            file={file}
-            setFile={setFile}
-            fileRef={fileRef}
-          />
-        ) : null}
+          <Upload setStep={setStep} file={file} setFile={setFile} />
+        ) : (
+          <UserSkills />
+        )}
         <Button
           onClick={handleResumeUpload}
           disabled={!file || isPending}
           className={"w-full"}
         >
           {isPending ? (
-            <Loader2 className="animate-spin" size={18} />
+            <>
+              <Loader2 className="animate-spin size-6" /> Uploading...
+            </>
           ) : (
             <>
               Next
