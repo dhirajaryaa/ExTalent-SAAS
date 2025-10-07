@@ -1,6 +1,4 @@
 import {
-  BadgeCheckIcon,
-  ChevronRightIcon,
   ScanSearch,
   Loader2,
 } from "lucide-react";
@@ -20,13 +18,15 @@ import ListSkills from "./ListSkills";
 function UserSkills() {
   const {
     userResumeEvaluation: { mutateAsync, isPending },
-  } = useUser();
-  const { setResumeEvaluation } = userStore.getState();
+    userProfile: { refetch },
+  } = useUser(false);
+  const { setProfile, profile } = userStore.getState();
 
   const handleAnalyzeResume = async () => {
     const res = await mutateAsync();
     if (res?.isSuccess) {
-      setResumeEvaluation(res?.data);
+      const profile = await refetch();
+      setProfile(profile?.data?.data);
     }
   };
 
@@ -64,7 +64,7 @@ function UserSkills() {
         </ItemActions>
       </Item>
       {/* list of skills  */}
-      <ListSkills />
+      <ListSkills profile={profile} />
     </div>
   );
 }
