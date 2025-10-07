@@ -3,5 +3,7 @@ import Logo from "./base/Logo";
 import Loading from "./base/Loading";
 import AppSidebar  from "./base/AppSidebar";
 import Header from "./base/Header";
+import Upload from "./onboarding/Upload";
+import UserSkills from "./onboarding/UserSkills";
 
-export { Navbar,Logo,Loading,AppSidebar,Header };
+export { Navbar,Logo,Loading,AppSidebar,Header,Upload ,UserSkills};

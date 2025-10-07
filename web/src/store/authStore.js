@@ -5,6 +5,8 @@ const authStore = create((set) => ({
   user: null,
   setUser: (user) => set({ user, isAuthenticated: true }),
   removeUser: () => set({ user: null, isAuthenticated: false }),
+  skipOnboarding: () =>
+    set((state) => ({ user: { ...state.user, isOnboarding: false } })),
 }));
 
 export default authStore;

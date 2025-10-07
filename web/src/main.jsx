@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { Dashboard, Home, LoginPage, NotFound } from "./pages";
+import { Dashboard, Home, LoginPage, NotFound, Onboarding } from "./pages";
 import { Loading } from "./components/custom";
 import authChecker from "./lib/authChecker";
 
@@ -19,6 +19,10 @@ const appRouter = createBrowserRouter([
   {
     path: "login",
     element: <LoginPage />, // login page
+  },
+  {
+    path: "onboarding",
+    element: <Onboarding />, // onboarding page
   },
   {
     loader: authChecker,
