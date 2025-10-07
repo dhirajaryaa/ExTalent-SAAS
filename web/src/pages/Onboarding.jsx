@@ -4,14 +4,16 @@ import { Upload, UserSkills } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
 import authStore from "@/store/authStore";
-import { ArrowRight, Loader2, ArrowLeft ,AlertCircleIcon} from "lucide-react";
+import { ArrowRight, Loader2, ArrowLeft, AlertCircleIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import userStore from "@/store/userStore";
 
 function Onboarding() {
   const [file, setFile] = useState(null);
   const [step, setStep] = useState(2);
   const navigate = useNavigate();
-  const { skipOnboarding, setUser } = authStore.getState();
+  const { skipOnboarding } = authStore.getState();
+  const { setProfile } = userStore.getState();
   const {
     userResumeUpload: { mutateAsync: resumeUpload, isPending, error, isError },
     userProfile: { refetch },
@@ -27,9 +29,9 @@ function Onboarding() {
     const res = await resumeUpload(file);
     if (res.isSuccess) {
       const profile = await refetch();
-      setUser(profile?.data);
+      setProfile(profile?.data?.data);
       setStep(2);
-    };
+    }
     setFile(null);
   };
 
@@ -59,27 +61,43 @@ function Onboarding() {
         )}
         {/* error show  */}
         {isError && file && (
-          <Alert variant={'destructive'}>
-            <AlertCircleIcon  />
+          <Alert variant={"destructive"}>
+            <AlertCircleIcon />
             <AlertTitle>{error?.response?.data?.message}</AlertTitle>
           </Alert>
         )}
-        <Button
-          onClick={handleResumeUpload}
-          disabled={!file || isPending}
-          className={"w-full"}
-        >
-          {isPending ? (
-            <>
-              <Loader2 className="animate-spin size-6" /> Uploading...
-            </>
-          ) : (
-            <>
-              {step === 1 ? "Next" : "Finish"}
-              <ArrowRight size={18} />
-            </>
-          )}
-        </Button>
+        {step === 1 ? (
+          <Button
+            onClick={handleResumeUpload}
+            disabled={!file || isPending}
+            className={"w-full"}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="animate-spin size-6" /> Uploading...
+              </>
+            ) : (
+              <>
+                Next <ArrowRight size={18} />
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button
+            // disabled={!file || isPending}
+            className={"w-full"}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="animate-spin size-6" /> saving...
+              </>
+            ) : (
+              <>
+                Finish <ArrowRight size={18} />
+              </>
+            )}
+          </Button>
+        )}
       </section>
     </main>
   );

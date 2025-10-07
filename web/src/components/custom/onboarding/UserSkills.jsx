@@ -45,7 +45,7 @@ function UserSkills() {
         </p>
       </div>
       {/* ai skills analysis  */}
-      <Item variant="muted" size="sm">
+      <Item variant="outline" size="sm">
         <ItemContent>
           <ItemTitle>Analyze Resume using AI</ItemTitle>
           <ItemDescription>

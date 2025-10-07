@@ -1,7 +1,7 @@
 import { userOnboardingAPI, userProfileAPI, userResumeEvaluationAPI, userResumeUploadAPI } from "@/api/user.api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-const useUser = (enable) => {
+const useUser = (enable=true) => {
   const userResumeUpload = useMutation({
     mutationFn: userResumeUploadAPI,
     mutationKey: ["userResumeUpload"],
