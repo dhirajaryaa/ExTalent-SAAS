@@ -10,7 +10,11 @@ const userResumeUploadAPI = async (data) => {
 };
 
 const userOnboardingAPI = async () => {
-  const res = await api.patch("/users/profile/onboarding");
+  const res = await api.patch("/users/profile/onboarding", null, {
+    params: {
+      onboarding: true,
+    },
+  });
   return res.data;
 };
 
@@ -22,6 +26,11 @@ const userProfileAPI = async () => {
 const userResumeEvaluationAPI = async () => {
   const res = await api.get("/evaluations/resume");
   return res.data;
-}
+};
 
-export { userResumeUploadAPI, userOnboardingAPI, userProfileAPI,userResumeEvaluationAPI };
+export {
+  userResumeUploadAPI,
+  userOnboardingAPI,
+  userProfileAPI,
+  userResumeEvaluationAPI,
+};

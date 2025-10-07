@@ -10,13 +10,17 @@ import userStore from "@/store/userStore";
 
 function Onboarding() {
   const [file, setFile] = useState(null);
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const { skipOnboarding } = authStore.getState();
   const { setProfile } = userStore.getState();
   const {
     userResumeUpload: { mutateAsync: resumeUpload, isPending, error, isError },
     userProfile: { refetch },
+    userOnboarding: {
+      mutateAsync: userOnboarding,
+      isPending: onboardingPending,
+    },
   } = useUser(false);
 
   const handleSkipOnboarding = () => {
@@ -33,6 +37,17 @@ function Onboarding() {
       setStep(2);
     }
     setFile(null);
+  };
+
+  //! handle Resume OnBoarding
+  const handleUserOnboarding = async () => {
+    const res = await userOnboarding();
+    if (res.isSuccess) {
+      const profile = await refetch();
+      setProfile(profile?.data?.data);
+      setStep(1);
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -83,20 +98,26 @@ function Onboarding() {
             )}
           </Button>
         ) : (
-          <Button
-            // disabled={!file || isPending}
-            className={"w-full"}
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="animate-spin size-6" /> saving...
-              </>
-            ) : (
-              <>
-                Finish <ArrowRight size={18} />
-              </>
-            )}
-          </Button>
+          <div className="flex gap-2 items-center w-full">
+            <Button variant={"outline"} onClick={() => setStep(1)}>
+              <ArrowLeft /> Back
+            </Button>
+            <Button
+              onClick={handleUserOnboarding}
+              disabled={onboardingPending}
+              className={"flex-1"}
+            >
+              {onboardingPending ? (
+                <>
+                  <Loader2 className="animate-spin size-6" /> saving...
+                </>
+              ) : (
+                <>
+                  Finish <ArrowRight size={18} />
+                </>
+              )}
+            </Button>
+          </div>
         )}
       </section>
     </main>
