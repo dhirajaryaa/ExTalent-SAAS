@@ -1,6 +1,6 @@
 import { Logo } from "@/components/custom";
 import { Button } from "@/components/ui/button";
-import { LogIn } from "lucide-react";
+import { Github } from "lucide-react";
 
 function LoginPage() {
   const loginWithGoogle = () => {
@@ -24,8 +24,8 @@ function LoginPage() {
           className={"w-full shadow-md"}
         >
 
-          <LogIn size={18}/>
-          Sign in with Google
+          <Github size={18} />
+          Sign in with Github
         </Button>
       </div>
     </main>

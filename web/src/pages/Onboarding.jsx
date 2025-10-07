@@ -1,29 +1,46 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Upload } from "@/components/custom";
 import { Button } from "@/components/ui/button";
+import useUser from "@/hooks/useUser";
 import authStore from "@/store/authStore";
-import { ArrowRight } from "lucide-react";
-import { ArrowLeft } from "lucide-react";
-import {useState} from "react";
-import { useNavigate } from "react-router";
+import { ArrowRight, Loader2, ArrowLeft } from "lucide-react";
+import { useRef } from "react";
 
 function Onboarding() {
-  const [step,setStep] = useState(1);
+  const fileRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const { skipOnboarding } = authStore.getState();
+  const {
+    userResumeUpload: { mutateAsync:resumeUpload, isPending },
+    userOnboarding: {mutateAsync:onboarding}
+  } = useUser();
+
   const handleSkipOnboarding = () => {
     skipOnboarding();
     navigate("/dashboard");
   };
+  // handle Resume  Upload
+  const handleResumeUpload = async () => {
+    const res = await resumeUpload(file);
+    if(res.isSuccess){
+      
+    }
+   
+    navigate("/dashboard");
+  };
 
   return (
-    <main className="w-full min-svh p-4">
-      <nav className="flex items-center justify-between gap-2 w-full mb-10">
-        <Button size="icon-sm" variant={"outline"} onClick={() => navigate(-1)}>
-          <ArrowLeft size={18} />
+    <main className="w-full min-svh h-screen p-4 flex flex-col items-center justify-center relative">
+      <nav className="flex items-center justify-between gap-2 w-full mb-10 fixed top-2 left-0 right-0 px-4">
+        <Button size="sm" variant={"outline"} onClick={() => navigate(-1)}>
+          <ArrowLeft size={18} /> Back
         </Button>
-        <Button variant={"ghost"} onClick={handleSkipOnboarding}>
+        {/* <Button variant={"ghost"} onClick={handleSkipOnboarding}>
           Skip
-        </Button>
+        </Button> */}
       </nav>
       <h1 className="text-xl text-primary font-bold sm:text-4xl text-center">
         Welcome, to ExTalent
@@ -34,9 +51,27 @@ function Onboarding() {
       {/* stepper later on */}
       {/* <div className="flex w-full"></div> */}
       <section className="border-2 border-primary w-full max-w-2xl mx-auto p-6 mt-6 rounded-xl flex flex-col gap-4">
-        {step ? <Upload setStep={setStep}/> : null}
-        <Button>
-          Next <ArrowRight size={18} />
+        {step ? (
+          <Upload
+            setStep={setStep}
+            file={file}
+            setFile={setFile}
+            fileRef={fileRef}
+          />
+        ) : null}
+        <Button
+          onClick={handleResumeUpload}
+          disabled={!file || isPending}
+          className={"w-full"}
+        >
+          {isPending ? (
+            <Loader2 className="animate-spin" size={18} />
+          ) : (
+            <>
+              Next
+              <ArrowRight size={18} />
+            </>
+          )}
         </Button>
       </section>
     </main>
