@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { UploadCloud } from "lucide-react";
-import { useState } from "react";
 import resumeIcon from "@/assets/pdf.svg";
 import { X } from "lucide-react";
 
 function Upload({ setStep,file,setFile }) {
   //   handle file select change
   const handleFileChange = (e) => {
+    if(e.target.files[0]?.type !== "application/pdf") return
     e.target.files[0] && setFile(e.target.files[0]);
   };
 

@@ -19,4 +19,9 @@ const userProfileAPI = async () => {
   return res.data;
 };
 
-export { userResumeUploadAPI, userOnboardingAPI, userProfileAPI };
+const userResumeEvaluationAPI = async () => {
+  const res = await api.get("/evaluations/resume");
+  return res.data;
+}
+
+export { userResumeUploadAPI, userOnboardingAPI, userProfileAPI,userResumeEvaluationAPI };

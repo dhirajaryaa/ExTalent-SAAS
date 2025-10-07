@@ -9,7 +9,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 
 function Onboarding() {
   const [file, setFile] = useState(null);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const navigate = useNavigate();
   const { skipOnboarding, setUser } = authStore.getState();
   const {
@@ -21,8 +21,9 @@ function Onboarding() {
     skipOnboarding();
     navigate("/dashboard");
   };
-  // handle Resume  Upload
+  //! handle Resume  Upload
   const handleResumeUpload = async () => {
+    if (!file || file.type !== "application/pdf") return;
     const res = await resumeUpload(file);
     if (res.isSuccess) {
       const profile = await refetch();
