@@ -1,9 +1,10 @@
 import z from "zod";
+import mongoose from "mongoose";
 import asyncHandler from "../utils/asyncHandler.js";
 import apiError from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
 import userModel from "./user.model.js";
-import evolutionModal from "../evaluation/evaluation.model.js"
+import evolutionModal from "../evaluation/evaluation.model.js";
 import { resumeFileSchema, updateProfileSchema, userSkillsSchema } from "./user.schema.js";
 import { removeFromCloudinary, uploadOnCloudinary } from "../services/cloudinary.service.js";
 
@@ -14,23 +15,48 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 
   // get user info with remove sensitive info
-  const user = await userModel.findById(req.user?._id);
+  const [user] = await userModel.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id),
+        isDeleted: false,
+      },
+    },
+    {
+      $lookup: {
+        from: "evaluations",
+        localField: "_id",
+        foreignField: "userId",
+        as: "evaluation",
+      },
+    },
+    {
+      $unwind: "$evaluation",
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        email: 1,
+        blogLink: 1,
+        githubUsername: 1,
+        avatar: 1,
+        bio: 1,
+        location: 1,
+        resume: 1,
+        summary: "$evaluation.userSummary",
+        skills: "$evaluation.skills",
+        experience: "$evaluation.experience",
+        soft_skills: "$evaluation.soft_skills",
+      },
+    },
+  ]);
+  // const user = await userModel.findById(req.user?._id);
   if (!user) {
     throw new apiError(404, "user not found!");
   }
-  // check user profile delete or not
-  if (user.isDeleted) {
-    throw new apiError(404, "user not found!");
-  }
-  // check user profile access auth user
-  if (user._id.toString() !== req.user._id.toString()) {
-    throw new apiError(403, "unAuthorized Request!");
-  }
-  const loginUser = await userModel
-    .findById(user?._id)
-    .select("-githubId -githubToken -refreshToken -isOnboarding -isDeleted -expireAt");
   //? return res
-  return res.status(200).json(new apiResponse(200, "get user profile successful", loginUser));
+  return res.status(200).json(new apiResponse(200, "get user profile successful", user));
 });
 
 // user profile edit
@@ -66,7 +92,7 @@ const userSkillsUpdate = asyncHandler(async (req, res) => {
   }
   // update on db
   const user = await evolutionModal.findOneAndUpdate(
-    {userId:req.user?._id},
+    { userId: req.user?._id },
     {
       $set: validate?.data,
     },
@@ -109,9 +135,9 @@ const uploadUserResume = asyncHandler(async (req, res) => {
   }
   // upload on cloudinary
   const upload = await uploadOnCloudinary(req.file.path);
-  if(!upload){
-    throw new apiError(500,"something went wrong!")
-  };
+  if (!upload) {
+    throw new apiError(500, "something went wrong!");
+  }
   // update user resume info
   const resumeInfo = await userModel.findByIdAndUpdate(
     user._id,
@@ -121,9 +147,7 @@ const uploadUserResume = asyncHandler(async (req, res) => {
         publicId: upload.public_id || null,
       },
     },
-    { new: true ,
-      select: ("+name +_id +resume")
-    }
+    { new: true, select: "+name +_id +resume" }
   );
 
   // return res
