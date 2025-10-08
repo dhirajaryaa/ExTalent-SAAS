@@ -11,10 +11,10 @@ function NavLinks({ links }) {
     <SidebarMenu className={"mt-10"}>
       {links.map((link) => (
         <SidebarMenuItem key={link.title}>
-          <Link to={link.url}>
+          <Link to={link.url} state={link.title}>
             <SidebarMenuButton
               asChild
-              tooltip={link.name}
+              tooltip={link.title}
               isActive={pathname.startsWith(link.url)}
               className="data-[active=true]:bg-primary data-[active=true]:text-background mx-auto text-sidebar-accent-foreground/60 w-[90%]"
             >
