@@ -6,26 +6,26 @@ import authStore from "./store/authStore";
 
 function App() {
   const { isAuthenticated } = useLoaderData();
-  const {user} = authStore();
+  const user = authStore(state => state.user);
 
-  return isAuthenticated ? (
-    user?.isOnboarding ? (
-      <Navigate to="/onboarding" replace /> // send on onboarding page
-    ) : (
-      <>
-        <SidebarProvider>
-          <AppSidebar />
-          <div className="w-full min-h-svh">
-            <Header />
-            <main className="p-2">
-              <Outlet />
-            </main>
-          </div>
-        </SidebarProvider>
-      </>
-    )
-  ) : (
-    <Navigate to="/login" replace />
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.isOnboarding) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <div className="w-full min-h-svh">
+        <Header />
+        <main className="p-2">
+          <Outlet />
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }
 

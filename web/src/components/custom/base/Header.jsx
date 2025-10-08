@@ -5,7 +5,9 @@ import { useLocation } from "react-router";
 
 function Header() {
   const { user } = authStore();
-  const {state:activePage}  = useLocation()
+  const {state,pathname}  = useLocation()
+
+  const activePage = state ? state : pathname.split("/")?.filter(Boolean)?.join(" ");
 
   return (
     <header className="w-full sticky top-0 left-0 right-0 flex px-4 py-2 items-center justify-between border-b bg-background z-40">
