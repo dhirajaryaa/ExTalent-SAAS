@@ -9,7 +9,7 @@ function Header() {
     const {activePage} = uiStore()
 
   return (
-    <header className="w-full sticky top-0 left-0 right-0 flex px-4 py-2 items-center justify-between border-b">
+    <header className="w-full sticky top-0 left-0 right-0 flex px-4 py-2 items-center justify-between border-b bg-background z-40">
       <div className="flex items-center gap-2 justify-center">
       <SidebarTrigger className={'mt-1'}/>
       <h1 className="text-lg sm:text-2xl font-bold text-primary font-sans">{activePage}</h1>

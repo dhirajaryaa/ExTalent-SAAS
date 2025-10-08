@@ -47,51 +47,41 @@ const jobs = [
 
 
   return (
-    <Table className={"mt-4"}>
-      <TableCaption>A list of your recent job scan.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className={"w-[40%]"}>Job Title</TableHead>
-          <TableHead >Company</TableHead>
-          <TableHead>Match score</TableHead>
-          <TableHead>Match skills</TableHead>
-          <TableHead>Action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        { //job data list
-            jobs?.map((job)=>(
-        <TableRow className={"hover:bg-muted/50"} key={job.id}>
-          <TableCell className="font-medium ">{job.title}</TableCell>
+  <Table>
+    <TableCaption>A list of your recent job scan.</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="min-w-[20%]">Job Title</TableHead>
+        <TableHead>Company</TableHead>
+        <TableHead>Match score</TableHead>
+        <TableHead>Match skills</TableHead>
+        <TableHead>Action</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {jobs?.map((job) => (
+        <TableRow className="hover:bg-muted/50" key={job.id}>
+          <TableCell>{job.title}</TableCell>
           <TableCell>{job.company}</TableCell>
           <TableCell>{job.score}</TableCell>
-          <TableCell className={'space-x-1'}>
+          <TableCell className="space-x-1">
             {job.matchSkills?.slice(0, 2).map((skill, index) => (
-              <Badge variant={"outline"} key={index}>{skill}</Badge>
+              <Badge variant="outline" key={index}>{skill}</Badge>
             ))}
             {job.matchSkills?.length > 2 && (
-              <Badge variant={"outline"} key={2}>+{job.matchSkills?.length - 2} more</Badge>
-            ) || (job.matchSkills?.length > 4 && (
-              <div className="flex flex-wrap gap-2">
-                {job.matchSkills?.slice(2, 7).map((skill, index) => (
-                  <Badge variant={"outline"} key={index+2}>{skill}</Badge>
-                ))}
-              </div>
-            ))}
+              <Badge variant="outline">+{job.matchSkills.length - 2} more</Badge>
+            )}
           </TableCell>
           <TableCell>
-            <Button size={"sm"}>
-              <ExternalLink />
+            <Button size="sm">
+              <ExternalLink className="mr-1" />
               View
             </Button>
           </TableCell>
         </TableRow>
-            ))
-        }
-        
-      
-      </TableBody>
-    </Table>
+      ))}
+    </TableBody>
+  </Table>
   );
 }
 

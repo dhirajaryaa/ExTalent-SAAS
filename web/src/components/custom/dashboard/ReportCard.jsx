@@ -15,7 +15,7 @@ function ReportCard({title,description,value,action}) {
       <Card className="bg-gradient-to-b to-muted from-background w-full">
         <CardHeader>
           <CardDescription>{title}</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-primary">
+          <CardTitle className="text-2xl font-bold tabular-nums sm:text-4xl">
           {value > 9 ? value : `0${value}`}
           </CardTitle>
           <CardAction>

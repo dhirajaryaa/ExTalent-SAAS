@@ -3,7 +3,7 @@ import React from "react";
 
 function Dashboard() {
   return (
-    <section className="min-svh w-full p-3">
+    <section className="overflow-y-hidden h-full w-full p-3">
       <div className="w-full grid sm:grid-cols-3 sm:grid-rows-1 grid-cols-1 grid-rows-3 gap-4">
         <ReportCard
           title={"Total Job Scan"}
