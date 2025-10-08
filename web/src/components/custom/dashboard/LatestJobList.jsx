@@ -66,10 +66,10 @@ const jobs = [
           <TableCell>{job.score}</TableCell>
           <TableCell className="space-x-1">
             {job.matchSkills?.slice(0, 2).map((skill, index) => (
-              <Badge variant="outline" key={index}>{skill}</Badge>
+              <Badge variant="outline"  className={'text-xs'} key={index}>{skill}</Badge>
             ))}
             {job.matchSkills?.length > 2 && (
-              <Badge variant="outline">+{job.matchSkills.length - 2} more</Badge>
+              <Badge variant="outline" className={'text-xs'} >+{job.matchSkills.length - 2} more</Badge>
             )}
           </TableCell>
           <TableCell>
