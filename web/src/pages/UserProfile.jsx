@@ -1,4 +1,4 @@
-import { Loading, Skills } from "@/components/custom";
+import { Loading } from "@/components/custom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
@@ -52,7 +52,7 @@ function UserProfile() {
         </div>
       </div>
       {/* skills  */}
-      <Skills skills={profile?.skills}/>
+      {/* <Skills skills={profile?.skills}/> */}
     </section>
   );
 }
