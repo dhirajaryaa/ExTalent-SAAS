@@ -10,6 +10,9 @@ import UserSkills from "./onboarding/UserSkills";
 // dashboard
 import ReportCard from "./dashboard/ReportCard";
 import LatestJobList from "./dashboard/LatestJobList";
+// profile
+import Field from "./profile/Field";
+import ProfileForm from "./profile/ProfileForm";
 
 export {
   Navbar,
@@ -21,4 +24,6 @@ export {
   UserSkills,
   ReportCard,
   LatestJobList,
+  Field,
+  ProfileForm
 };
