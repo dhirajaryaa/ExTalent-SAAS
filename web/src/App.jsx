@@ -1,17 +1,17 @@
-import { Navigate, useLoaderData } from "react-router";
-import { Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import { SidebarProvider } from "./components/ui/sidebar";
 import { AppSidebar, Header } from "./components/custom";
-import authStore from "./store/authStore";
+import { useStore } from "./store/store";
 
 function App() {
-  const { isAuthenticated } = useLoaderData();
-  const user = authStore(state => state.user);
+  const isAuthenticated = useStore((s) => s.isAuthenticated);
+  const user = useStore((s) => s.user);
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;
   }
 
+  //  new user navigate to Onboarding page
   if (user.isOnboarding) {
     return <Navigate to="/onboarding" replace />;
   }
