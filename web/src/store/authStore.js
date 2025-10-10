@@ -1,12 +1,14 @@
 import { create } from "zustand";
 
-const authStore = create((set) => ({
+const initialState = {
   isAuthenticated: false,
   user: null,
-  setUser: (user) => set({ user, isAuthenticated: true }),
-  removeUser: () => set({ user: null, isAuthenticated: false }),
-  skipOnboarding: () =>
-    set((state) => ({ user: { ...state.user, isOnboarding: false } })),
-}));
+  isLoading: true,
+};
 
-export default authStore;
+// auth store
+export const useAuthSlice = create((set) => ({
+  ...initialState,
+  setUser: (user) => set({ user, isAuthenticated: true, isLoading: false }),
+  removeUser: () => set({ ...initialState }),
+}));
