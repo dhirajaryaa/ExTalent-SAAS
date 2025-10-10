@@ -1,26 +1,22 @@
-import {
-  ScanSearch,
-  Loader2,
-} from "lucide-react";
+import { ScanSearch, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
-  ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
 import useUser from "@/hooks/useUser";
-import userStore from "@/store/userStore";
 import ListSkills from "./ListSkills";
+import { setProfile, useStore } from "@/store/store";
 
 function UserSkills() {
   const {
     userResumeEvaluation: { mutateAsync, isPending },
     userProfile: { refetch },
   } = useUser(false);
-  const { setProfile, profile } = userStore.getState();
+  const profile = useStore((s) => s.profile);
 
   const handleAnalyzeResume = async () => {
     const res = await mutateAsync();

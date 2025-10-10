@@ -1,3 +1,4 @@
+import { Rss } from "lucide-react";
 import api from "./baseApi";
 
 const logoutUserAPI = async () => {
@@ -5,4 +6,9 @@ const logoutUserAPI = async () => {
   return res.data;
 };
 
-export { logoutUserAPI };
+const loginUserAPI = async () => {
+  const res = await api.get("/auth/me");
+  return res.data?.data;
+};
+
+export { logoutUserAPI, loginUserAPI };

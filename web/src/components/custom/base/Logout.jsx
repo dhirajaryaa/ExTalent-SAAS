@@ -1,15 +1,14 @@
-import authStore from "@/store/authStore";
-import useAuth from "@/hooks/useAuth";
 import { LogOut, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { SidebarMenu, SidebarMenuButton } from "@/components/ui/sidebar";
+import { removeUser } from "@/store/store";
+import useAuth from "@/hooks/useAuth";
 
 function Logout() {
   const navigate = useNavigate();
   const {
     logoutUser: { isPending, mutateAsync },
   } = useAuth();
-  const { removeUser } = authStore.getState();
 
   async function logoutHandler() {
     removeUser();

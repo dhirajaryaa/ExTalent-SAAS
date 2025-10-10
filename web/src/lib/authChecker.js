@@ -1,29 +1,26 @@
-import api from "@/api/baseApi";
-import authStore from "@/store/authStore";
+import { loginUserAPI } from "@/api/auth.api";
+import { removeUser, setUser, useStore } from "@/store/store";
 
 const authChecker = async () => {
-  const { setUser, removeUser } = authStore.getState();
-  try {
-    const authUser = await api.get("/auth/me");
-    if (authUser.data?.isSuccess) {
-      const loginUser = authUser.data?.data;
-      setUser(loginUser?.user);
-      localStorage.setItem("token", loginUser?.accessToken);
-      return { isAuthenticated: true, user: loginUser };
-    } else {
+  const isAuthenticated = useStore.getState().isAuthenticated;
+  if (!isAuthenticated) {
+    try {
+      const authUser = await loginUserAPI();
+
+      if (authUser.data?.isError) return { isAuthenticated: false };
+      localStorage.setItem("token", authUser?.accessToken);
+      setUser(authUser?.user);
+      return { isAuthenticated: true };
+    } catch (error) {
+      console.log(error?.response?.data?.code);
+      if (error?.response?.data?.name === "AUTHERROR") {
+        console.error("session expired! please login again.");
+      }
+      console.error("Authorization Error:", error?.response?.data?.message);
+      localStorage.removeItem("token");
       removeUser();
-      localStorage.setItem("token", null);
-      return { isAuthenticated: false, user: null };
+      return { isAuthenticated: false };
     }
-  } catch (error) {
-    console.log(error?.response?.data?.code);
-    if (error?.response?.data?.name === "AUTHERROR") {
-      console.error("session expired! please login again.");
-    }
-    console.error("Authorization Error:", error?.response?.data?.message);
-    removeUser();
-    localStorage.setItem("token", null);
-    return { isAuthenticated: false, user: null };
   }
 };
 

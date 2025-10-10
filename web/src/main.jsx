@@ -4,7 +4,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { Dashboard, Home, LoginPage, NotFound, Onboarding } from "./pages";
+import {
+  Dashboard,
+  Home,
+  LoginPage,
+  NotFound,
+  Onboarding,
+  UserProfile,
+} from "./pages";
 import { Loading } from "./components/custom";
 import authChecker from "./lib/authChecker";
 
@@ -33,6 +40,10 @@ const appRouter = createBrowserRouter([
         path: "dashboard", //* dashboard page
         element: <Dashboard />,
       },
+      {
+        path: "profile", //* user profile page
+        element: <UserProfile />,
+      },
     ],
   },
   {
@@ -43,10 +54,10 @@ const appRouter = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<Loading />}>
-        <RouterProvider router={appRouter} />
-      </Suspense>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <Suspense fallback={<Loading />}>
+          <RouterProvider router={appRouter} />
+        </Suspense>
+      </QueryClientProvider>
   </StrictMode>
 );
