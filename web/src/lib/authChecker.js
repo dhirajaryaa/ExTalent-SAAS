@@ -1,17 +1,15 @@
-import api from "@/api/baseApi";
-import { useStore } from "@/store/store";
+import { loginUserAPI } from "@/api/auth.api";
+import { removeUser, setUser, useStore } from "@/store/store";
 
 const authChecker = async () => {
-  const { isAuthenticated, setUser, removeUser } = useStore().getState();
+  const isAuthenticated = useStore.getState().isAuthenticated;
   if (!isAuthenticated) {
     try {
-      const authUser = await api.get("/auth/me");
+      const authUser = await loginUserAPI();
 
-      if (authUser.data?.isError) return null;
-
-      const loginUser = authUser.data?.data;
-      localStorage.setItem("token", loginUser?.accessToken);
-      setUser(loginUser);
+      if (authUser.data?.isError) return { isAuthenticated: false };
+      localStorage.setItem("token", authUser?.accessToken);
+      setUser(authUser?.user);
       return { isAuthenticated: true };
     } catch (error) {
       console.log(error?.response?.data?.code);
@@ -21,7 +19,7 @@ const authChecker = async () => {
       console.error("Authorization Error:", error?.response?.data?.message);
       localStorage.removeItem("token");
       removeUser();
-      return null;
+      return { isAuthenticated: false };
     }
   }
 };
