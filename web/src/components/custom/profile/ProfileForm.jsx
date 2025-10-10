@@ -5,8 +5,11 @@ import { XCircle } from "lucide-react";
 
 function ProfileForm({ profile, editable }) {
   return (
-    <div className="w-full mx-auto max-w-3xl p-4">
-      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary"> About User</h2>
+    <div className="w-full mx-auto max-w-3xl mt-5 sm:mt-8">
+      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary">
+        {" "}
+        About User
+      </h2>
       <form className="w-full max-w-3xl mx-auto mt-4 rounded-2xl grid grid-cols-1 md:grid-cols-3 gap-3 ">
         <Field
           value={profile?.name}
@@ -29,17 +32,20 @@ function ProfileForm({ profile, editable }) {
           className={"md:col-span-3"}
         />
         {editable && (
-          
-        <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-4 justify-self-center md:justify-self-end-safe">
-          <Button size={"sm"} variant={"outline"} className={"cursor-pointer"}>
-            <XCircle />
-            Cancel
-          </Button>
-          <Button size={"sm"} className={"cursor-pointer"}>
-            <Save />
-            Update
-          </Button>
-        </div>
+          <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-4 justify-self-center md:justify-self-end-safe">
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              className={"cursor-pointer"}
+            >
+              <XCircle />
+              Cancel
+            </Button>
+            <Button size={"sm"} className={"cursor-pointer"}>
+              <Save />
+              Update
+            </Button>
+          </div>
         )}
       </form>
     </div>

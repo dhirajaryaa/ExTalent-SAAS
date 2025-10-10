@@ -44,11 +44,8 @@ function UserResume({ resume }) {
   }, [resume?.url]);
 
   return (
-    <div className="w-full mx-auto max-w-3xl p-4">
-      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary">
-        {" "}
-        Resume
-      </h2>
+    <div className="w-full mx-auto max-w-3xl">
+      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary">Resume</h2>
       <Item variant="muted">
         <ItemMedia>
           <Avatar className="size-10 rounded-none">

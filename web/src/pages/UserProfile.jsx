@@ -1,4 +1,4 @@
-import { Field, Loading, ProfileForm, UserResume } from "@/components/custom";
+import { DangerZone, Field, Loading, ProfileForm, UserResume } from "@/components/custom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -75,6 +75,8 @@ function UserProfile() {
       <ProfileForm editable={editable} profile={profile} />
       {/* user resume  */}
       <UserResume resume={profile?.resume} />
+      {/* profile delete  */}
+      <DangerZone />
     </section>
   );
 }

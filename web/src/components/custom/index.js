@@ -14,6 +14,7 @@ import LatestJobList from "./dashboard/LatestJobList";
 import Field from "./profile/Field";
 import ProfileForm from "./profile/ProfileForm";
 import UserResume from "./profile/UserResume";
+import DangerZone from "./profile/DangerZone";
 
 export {
   Navbar,
@@ -28,4 +29,5 @@ export {
   Field,
   ProfileForm,
   UserResume,
+  DangerZone
 };
