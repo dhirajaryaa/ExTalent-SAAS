@@ -1,10 +1,4 @@
-import { create } from "zustand";
-import { useStore } from "./store";
-
-// get login user value
-const loginUser = useStore((s) => s.user);
-
-export const useUserSlice = create((set) => ({
-  profile: loginUser || null,
+export const createUserSlice = (set) => ({
+  profile: null,
   setProfile: (profile) => set({ profile }),
-}));
+});
