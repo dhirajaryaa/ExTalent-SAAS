@@ -13,6 +13,7 @@ import LatestJobList from "./dashboard/LatestJobList";
 // profile
 import Field from "./profile/Field";
 import ProfileForm from "./profile/ProfileForm";
+import UserResume from "./profile/UserResume";
 
 export {
   Navbar,
@@ -25,5 +26,6 @@ export {
   ReportCard,
   LatestJobList,
   Field,
-  ProfileForm
+  ProfileForm,
+  UserResume,
 };

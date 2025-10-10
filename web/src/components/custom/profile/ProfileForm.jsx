@@ -5,9 +5,9 @@ import { XCircle } from "lucide-react";
 
 function ProfileForm({ profile, editable }) {
   return (
-    <form className="w-full mx-auto max-w-3xl p-4">
-      <h2 className="font-bold text-xl my-2 text-primary"> About User</h2>
-      <div className="w-full max-w-3xl mx-auto mt-4 rounded-2xl grid grid-cols-1 md:grid-cols-3 gap-3 ">
+    <div className="w-full mx-auto max-w-3xl p-4">
+      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary"> About User</h2>
+      <form className="w-full max-w-3xl mx-auto mt-4 rounded-2xl grid grid-cols-1 md:grid-cols-3 gap-3 ">
         <Field
           value={profile?.name}
           label="Name"
@@ -28,8 +28,9 @@ function ProfileForm({ profile, editable }) {
           editable={editable}
           className={"md:col-span-3"}
         />
-        {/* div.cols-span-3 */}
-        <div className=" space-x-4 mt-2 md:col-end-4 justify-self-end-safe">
+        {editable && (
+          
+        <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-4 justify-self-center md:justify-self-end-safe">
           <Button size={"sm"} variant={"outline"} className={"cursor-pointer"}>
             <XCircle />
             Cancel
@@ -39,8 +40,9 @@ function ProfileForm({ profile, editable }) {
             Update
           </Button>
         </div>
-      </div>
-    </form>
+        )}
+      </form>
+    </div>
   );
 }
 

@@ -1,29 +1,32 @@
-import { Field, Loading, ProfileForm } from "@/components/custom";
+import { Field, Loading, ProfileForm, UserResume } from "@/components/custom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/hooks/useUser";
-import { setProfile } from "@/store/store";
+import { setProfile, useStore } from "@/store/store";
 import { Edit } from "lucide-react";
 import { Github } from "lucide-react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 function UserProfile() {
   const [editable, setEditable] = useState(false);
   const [loadImg, setLoadImg] = useState(false);
+  const profile = useStore((s) => s.profile);
   const {
     userProfile: { data, isLoading },
   } = useUser(true);
 
-  const profile = data?.data;
-  setProfile(profile);
+  useEffect(() => {
+    if (data) {      
+      setProfile(data?.data);
+    }
+  }, [data]);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  console.log(editable);
-  
   return (
     <section className="w-full h-full p-3">
       {/* user top section */}
@@ -52,7 +55,7 @@ function UserProfile() {
             {profile?.bio}
           </p>
           <div className="flex gap-2 flex-wrap mt-2">
-            <Button size={"sm"} onClick={() => setEditable(prev=>!prev)}>
+            <Button size={"sm"} onClick={() => setEditable((prev) => !prev)}>
               <Edit />
               Edit Profile
             </Button>
@@ -69,7 +72,9 @@ function UserProfile() {
         </div>
       </div>
       {/* show and edit profile  */}
-      <ProfileForm editable={editable} profile={profile}/>
+      <ProfileForm editable={editable} profile={profile} />
+      {/* user resume  */}
+      <UserResume resume={profile?.resume} />
     </section>
   );
 }
