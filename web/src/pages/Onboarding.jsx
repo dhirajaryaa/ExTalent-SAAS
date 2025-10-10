@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { Upload, UserSkills } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
-import authStore from "@/store/authStore";
 import { ArrowRight, Loader2, ArrowLeft, AlertCircleIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import userStore from "@/store/userStore";
+import { setProfile, setUser, useStore } from "@/store/store";
+import useAuth from "@/hooks/useAuth";
 
 function Onboarding() {
+  const user = useStore(state => state.user);
   const [file, setFile] = useState(null);
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
-  const { skipOnboarding } = authStore.getState();
-  const { setProfile } = userStore.getState();
   const {
     userResumeUpload: { mutateAsync: resumeUpload, isPending, error, isError },
     userProfile: { refetch },
@@ -22,11 +21,8 @@ function Onboarding() {
       isPending: onboardingPending,
     },
   } = useUser(false);
+  const {loginUser:{refetch:userRefetch}} = useAuth(false);
 
-  const handleSkipOnboarding = () => {
-    skipOnboarding();
-    navigate("/dashboard");
-  };
   //! handle Resume  Upload
   const handleResumeUpload = async () => {
     if (!file || file.type !== "application/pdf") return;
@@ -35,7 +31,7 @@ function Onboarding() {
       const profile = await refetch();
       setProfile(profile?.data?.data);
       setStep(2);
-    }
+    };
     setFile(null);
   };
 
@@ -43,12 +39,18 @@ function Onboarding() {
   const handleUserOnboarding = async () => {
     const res = await userOnboarding();
     if (res.isSuccess) {
+      const loginUser = await userRefetch();
       const profile = await refetch();
+      // set login user for update onboarding info 
+      setUser(loginUser?.data?.user);
+      // set profile data for more user info  
       setProfile(profile?.data?.data);
       setStep(1);
-      navigate("/dashboard");
+      navigate("/dashboard",{state: "Dashboard"});
     }
   };
+  // is user not login send to login page 
+  if(!user) return <Navigate to="/login" replace />;
 
   return (
     <main className="w-full min-svh h-screen p-4 flex flex-col items-center justify-center relative">
@@ -56,9 +58,6 @@ function Onboarding() {
         <Button size="sm" variant={"outline"} onClick={() => navigate(-1)}>
           <ArrowLeft size={18} /> Back
         </Button>
-        {/* <Button variant={"ghost"} onClick={handleSkipOnboarding}>
-          Skip
-        </Button> */}
       </nav>
       <h1 className="text-xl text-primary font-bold sm:text-4xl text-center">
         Welcome, to ExTalent

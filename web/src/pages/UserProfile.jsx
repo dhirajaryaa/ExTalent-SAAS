@@ -2,7 +2,6 @@ import { Loading } from "@/components/custom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
-import userStore from "@/store/userStore";
 import { Edit } from "lucide-react";
 import { Github } from "lucide-react";
 
@@ -13,7 +12,6 @@ function UserProfile() {
 
   // const setProfile = userStore((state) => state.setProfile);
   const profile = data?.data;
-  console.log(profile);
 
   if (isLoading) {
     return <Loading />;
