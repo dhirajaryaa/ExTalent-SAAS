@@ -39,10 +39,10 @@ function Onboarding() {
   const handleUserOnboarding = async () => {
     const res = await userOnboarding();
     if (res.isSuccess) {
-      const loginUser = await userRefetch();
       const profile = await refetch();
+      const loginUser = await userRefetch();
       // set login user for update onboarding info 
-      setUser(loginUser?.data?.user);
+    await  setUser(loginUser?.data?.user);
       // set profile data for more user info  
       setProfile(profile?.data?.data);
       setStep(1);
