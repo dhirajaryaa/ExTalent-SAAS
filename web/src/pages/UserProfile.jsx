@@ -1,13 +1,17 @@
-import { DangerZone, Field, Loading, ProfileForm, UserResume } from "@/components/custom";
+import {
+  DangerZone,
+  Loading,
+  ProfileForm,
+  SkillProgress,
+  UserResume,
+} from "@/components/custom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/hooks/useUser";
 import { setProfile, useStore } from "@/store/store";
-import { Edit } from "lucide-react";
-import { Github } from "lucide-react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { Edit,Github } from "lucide-react";
+import { useEffect ,useState} from "react";
 
 function UserProfile() {
   const [editable, setEditable] = useState(false);
@@ -17,8 +21,9 @@ function UserProfile() {
     userProfile: { data, isLoading },
   } = useUser(true);
 
+
   useEffect(() => {
-    if (data) {      
+    if (data) {
       setProfile(data?.data);
     }
   }, [data]);

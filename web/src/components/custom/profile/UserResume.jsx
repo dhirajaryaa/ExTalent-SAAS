@@ -34,7 +34,6 @@ function UserResume({ resume }) {
           lastModified: response.headers["last-modified"],
         };
         setMetaData(meta);
-        console.log(meta);
       } catch (err) {
         console.error("Failed to fetch PDF metadata:", err);
       }
