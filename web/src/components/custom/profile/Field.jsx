@@ -11,8 +11,8 @@ function Field({ label, value, editable, className, register }) {
       <Input
         disabled={!editable}
         id={label}
-        {...register(label, { value: value || "-" })}
-        // value={value || "-"}
+        {...register(label)}
+        value={value || "-"}
         className={`my-2 bg-muted/70 border-0 font-normal text-sm sm:text-base`}
       />
     </Label>

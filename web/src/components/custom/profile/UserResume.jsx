@@ -43,7 +43,7 @@ function UserResume({ resume }) {
   }, [resume?.url]);
 
   return (
-    <div className="w-full mx-auto max-w-3xl">
+    <div className="w-full mx-auto max-w-3xl mt-5 sm:mt-8">
       <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary">Resume</h2>
       <Item variant="muted">
         <ItemMedia>
