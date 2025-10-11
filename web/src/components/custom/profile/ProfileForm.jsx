@@ -3,36 +3,66 @@ import { Field } from "..";
 import { Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 import updateProfileSchema from "@/schema/user.schema";
+import useUser from "@/hooks/useUser";
+import { Loader2 } from "lucide-react";
+import { setProfile } from "@/store/store";
 
-function ProfileForm({ editable,profile }) {
+function ProfileForm({ profile,editable,setEditable }) {
+  const {
+    userProfileUpdate: { mutateAsync, isPending },
+    userProfile: { refetch },
+  } = useUser(false);
   // react form
-  const { register, handleSubmit, reset ,formState:{errors}} = useForm({
-resolver : zodResolver(updateProfileSchema)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, dirtyFields },
+  } = useForm({
+    resolver: zodResolver(updateProfileSchema),
+    mode: "onChange",
   });
 
   // set value when profile data arrived
-useEffect(() => {
-  if (profile) {
-    reset({
-      name: profile.name ?? "-",
-      email: profile.email ?? "-",
-      githubUsername: profile.githubUsername ?? "-",
-      location: profile.location ?? "-",
-      blogLink: profile.blogLink ?? "-",
-      bio: profile.bio ?? "-",
-    });
-  }
-}, [profile, reset]);
+  useEffect(() => {
+    if (profile) {
+      reset({
+        name: profile.name ?? "-",
+        email: profile.email ?? "-",
+        githubUsername: profile.githubUsername ?? "-",
+        location: profile.location ?? "-",
+        blogLink: profile.blogLink ?? "-",
+        bio: profile.bio ?? "-",
+      });
+    }
+  }, [profile, reset]);
 
-// handle profile update 
+  // handle profile update
 
-const handleFormSubmit = (data) => {
-  console.log("data", data);
-};
+  const handleFormSubmit = async (data) => {
+    const updatableFields = Object.keys(dirtyFields).reduce((acc, key) => {
+      acc[key] = data[key];
+      return acc;
+    }, {});
+    // console.log(updatableFields);
+    if (!updatableFields) {
+      reset(data);
+      setEditable(false);
+      return;
+    } else {      
+      const res = await mutateAsync(updatableFields);
+      if (res?.isSuccess) {
+        const profile = await refetch();
+        setProfile(profile?.data?.data);
+        reset(data);
+        setEditable(false);
+      }
+    }
+  };
 
-if(!profile)return null;
+  if (!profile) return null;
 
   return (
     <div className="w-full mx-auto max-w-3xl mt-5 sm:mt-8">
@@ -81,10 +111,18 @@ if(!profile)return null;
         />
         {/* submit button */}
         {editable && (
-          <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-4 justify-self-center md:justify-self-end-safe">
+          <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-3 justify-self-center md:justify-self-end-safe">
             <Button size={"sm"} className={"cursor-pointer"} type="submit">
-              <Save />
-              Update
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin size-6" /> Updating
+                </>
+              ) : (
+                <>
+                  <Save />
+                  Update
+                </>
+              )}
             </Button>
           </div>
         )}
