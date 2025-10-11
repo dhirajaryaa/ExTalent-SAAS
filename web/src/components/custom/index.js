@@ -15,6 +15,7 @@ import Field from "./profile/Field";
 import ProfileForm from "./profile/ProfileForm";
 import UserResume from "./profile/UserResume";
 import DangerZone from "./profile/DangerZone";
+import SkillProgress from "./profile/SkillProgress";
 
 export {
   Navbar,
@@ -29,5 +30,6 @@ export {
   Field,
   ProfileForm,
   UserResume,
-  DangerZone
+  DangerZone,
+  SkillProgress
 };
