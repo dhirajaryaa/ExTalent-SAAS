@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/hooks/useUser";
 import { setProfile, useStore } from "@/store/store";
-import { Edit,Github } from "lucide-react";
-import { useEffect ,useState} from "react";
+import { Edit, Github } from "lucide-react";
+import { useEffect, useState } from "react";
 
 function UserProfile() {
   const [editable, setEditable] = useState(false);
@@ -20,7 +20,6 @@ function UserProfile() {
   const {
     userProfile: { data, isLoading },
   } = useUser(true);
-
 
   useEffect(() => {
     if (data) {
@@ -79,7 +78,7 @@ function UserProfile() {
       {/* show and edit profile  */}
       <ProfileForm editable={editable} profile={profile} />
       {/* skills  */}
-      <SkillProgress editable={editable} skills={profile?.skills} />
+      <SkillProgress editable={false} skills={profile?.skills} />
       {/* user resume  */}
       <UserResume resume={profile?.resume} />
       {/* profile delete  */}
