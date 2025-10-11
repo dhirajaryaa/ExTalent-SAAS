@@ -1,7 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useStore } from "@/store/store";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
+import { GetExtensionsBtn } from "..";
 
 function Header() {
   const user = useStore((s) => s.user);
@@ -21,11 +22,13 @@ function Header() {
       </div>
       {/* user profile  */}
       <div className="flex items-center gap-2 justify-center">
-        <p className="hidden sm:block text-base font-semibold">{user?.name}</p>
+        <GetExtensionsBtn />
+        <Link to="/profile" state={"Profile"} >
         <Avatar className={"rounded-lg"}>
           <AvatarImage src={user?.avatar} alt={user?.name} loading="lazy" />
           <AvatarFallback>{user?.name}</AvatarFallback>
         </Avatar>
+        </Link>
       </div>
     </header>
   );

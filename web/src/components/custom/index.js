@@ -4,6 +4,7 @@ import Logo from "./base/Logo";
 import Loading from "./base/Loading";
 import AppSidebar from "./base/AppSidebar";
 import Header from "./base/Header";
+import GetExtensionsBtn from "./base/GetExtensionsBtn";
 // onboarding
 import Upload from "./onboarding/Upload";
 import UserSkills from "./onboarding/UserSkills";
@@ -22,6 +23,7 @@ export {
   Logo,
   Loading,
   AppSidebar,
+  GetExtensionsBtn,
   Header,
   Upload,
   UserSkills,
