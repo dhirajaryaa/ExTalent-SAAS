@@ -11,7 +11,7 @@ import { Trash2 } from "lucide-react";
 
 function DangerZone() {
   return (
-    <div className="max-w-3xl mx-auto mt-6">
+    <div className="max-w-3xl mx-auto mt-10">
       <Item variant="muted" className={"bg-destructive/10 border-destructive/60 "}>
         <ItemContent>
           <ItemTitle className={"text-destructive"}>Danger Zone</ItemTitle>

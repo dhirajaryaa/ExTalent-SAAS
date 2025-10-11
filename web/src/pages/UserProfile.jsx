@@ -78,6 +78,8 @@ function UserProfile() {
       </div>
       {/* show and edit profile  */}
       <ProfileForm editable={editable} profile={profile} />
+      {/* skills  */}
+      <SkillProgress editable={editable} skills={profile?.skills} />
       {/* user resume  */}
       <UserResume resume={profile?.resume} />
       {/* profile delete  */}

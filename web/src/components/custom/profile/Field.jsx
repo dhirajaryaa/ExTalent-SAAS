@@ -13,7 +13,7 @@ function Field({ label, value, editable, className, register }) {
         id={label}
         {...register(label)}
         value={value || "-"}
-        className={`my-2 bg-muted/70 border-0 font-normal text-sm sm:text-base`}
+        className={`my-2 bg-muted/70 focus:border-2 border-0 font-normal text-sm sm:text-base`}
       />
     </Label>
   );

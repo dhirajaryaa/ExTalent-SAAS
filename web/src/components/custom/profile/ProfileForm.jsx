@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Field, SkillProgress } from "..";
-import { Save } from "lucide-react";
-import { XCircle } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { XCircle, Save } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 function ProfileForm({ profile, editable }) {
   // react form
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       name: profile?.name,
       email: profile?.email,
@@ -14,13 +13,7 @@ function ProfileForm({ profile, editable }) {
       location: profile?.location,
       blogLink: profile?.blogLink,
       bio: profile?.bio,
-      skills: profile?.skills,
     },
-  });
-  // react form array
-  const { fields ,append,remove,update} = useFieldArray({
-    control,
-    name: "skills",
   });
 
   const handleFormSubmit = (data) => {
@@ -74,21 +67,10 @@ function ProfileForm({ profile, editable }) {
           className={"md:col-span-3"}
           register={register}
         />
-        {/* user skills show here */}
-        <SkillProgress skills={fields} editable={editable} register={register} />
         {/* submit button */}
         {editable && (
           <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-4 justify-self-center md:justify-self-end-safe">
-            <Button
-              size={"sm"}
-              variant={"outline"}
-              type="reset"
-              className={"cursor-pointer"}
-            >
-              <XCircle />
-              Cancel
-            </Button>
-            <Button size={"sm"} className={"cursor-pointer"} type="submit">
+            <Button size={"sm"} className={"cursor-pointer"} type="submit" >
               <Save />
               Update
             </Button>
