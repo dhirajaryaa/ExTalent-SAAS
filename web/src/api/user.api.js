@@ -28,9 +28,15 @@ const userResumeEvaluationAPI = async () => {
   return res.data;
 };
 
+const userProfileUpdateAPI = async(data)=>{
+  const res = await api.put('/users/profile',data)
+  return res.data;
+}
+
 export {
   userResumeUploadAPI,
   userOnboardingAPI,
   userProfileAPI,
   userResumeEvaluationAPI,
+  userProfileUpdateAPI
 };
