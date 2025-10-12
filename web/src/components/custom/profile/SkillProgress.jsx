@@ -9,9 +9,15 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { PencilRuler, SaveIcon } from "lucide-react";
 import { Trash2 } from "lucide-react";
+import useUser from "@/hooks/useUser";
+import { setProfile } from "@/store/store";
 
 function SkillProgress({ skills }) {
   const [skillsEditable, setSkillsEditable] = useState(false);
+  const {
+    userSkillsUpdate: { mutateAsync, isPending },
+    userProfile: { refetch },
+  } = useUser(false);
   // use form hook
   const {
     register,
@@ -41,6 +47,13 @@ function SkillProgress({ skills }) {
   //! handle skills update
   const handleSkillsUpdate = async (data) => {
     console.log(data);
+    const res = await mutateAsync(data);
+    if (res?.isSuccess) {
+      const profile = await refetch();
+      setProfile(profile?.data?.data);
+      reset(data);
+      setSkillsEditable(false);
+    }
   };
 
   return (

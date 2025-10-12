@@ -4,6 +4,7 @@ import {
   userProfileUpdateAPI,
   userResumeEvaluationAPI,
   userResumeUploadAPI,
+  userSkillsUpdateAPI,
 } from "@/api/user.api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -15,6 +16,10 @@ const useUser = (enable = true) => {
 
   const userProfileUpdate = useMutation({
     mutationFn: userProfileUpdateAPI,
+  });
+
+  const userSkillsUpdate = useMutation({
+    mutationFn: userSkillsUpdateAPI,
   });
 
   const userOnboarding = useMutation({
@@ -38,6 +43,7 @@ const useUser = (enable = true) => {
     userProfile,
     userResumeEvaluation,
     userProfileUpdate,
+    userSkillsUpdate,
   };
 };
 
