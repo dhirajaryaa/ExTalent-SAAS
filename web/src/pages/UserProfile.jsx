@@ -80,7 +80,7 @@ function UserProfile() {
       {/* skills  */}
       <SkillProgress editable={false} skills={profile?.skills} />
       {/* user resume  */}
-      <UserResume resume={profile?.resume} />
+      <UserResume resume={profile?.resume} name={profile?.name}/>
       {/* profile delete  */}
       <DangerZone />
     </section>

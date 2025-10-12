@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   Item,
   ItemActions,
@@ -9,22 +10,32 @@ import {
 import pdfLogo from "@/assets/pdf.svg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Upload } from "lucide-react";
-import axios from "axios";
+import { ExternalLink, Upload, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Label } from "@/components/ui/label";
+import useUser from "@/hooks/useUser";
+import { setProfile } from "@/store/store";
 
-function UserResume({ resume }) {
+function UserResume({ resume, name }) {
   const [metaData, setMetaData] = useState(null);
+  const {
+    userResumeUpload: { mutateAsync: resumeUpload, isPending },
+    userProfile: { refetch },
+  } = useUser(false);
 
-  async function getPdfMetaData(url) {
-    const response = await axios.head(url);
-    return {
-      contentType: response.headers.get("Content-Type"),
-      contentLength: response.headers.get("Content-Length"),
-      lastModified: response.headers.get("Last-Modified"),
-    };
-  }
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile.type !== "application/pdf") return;
+    if (selectedFile && selectedFile.type === "application/pdf") {
+      const res = await resumeUpload(selectedFile);
+      if (res.isSuccess) {
+        const profile = await refetch();
+        setProfile(profile?.data?.data);
+      }
+    }
+  };
 
+  // get pdf meta data
   useEffect(() => {
     async function fetchMeta() {
       if (!resume?.url) return;
@@ -44,7 +55,9 @@ function UserResume({ resume }) {
 
   return (
     <div className="w-full mx-auto max-w-3xl mt-5 sm:mt-8">
-      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary">Resume</h2>
+      <h2 className="font-semibold text-lg sm:text-xl my-2 text-primary">
+        Resume
+      </h2>
       <Item variant="muted">
         <ItemMedia>
           <Avatar className="size-10 rounded-none">
@@ -53,14 +66,33 @@ function UserResume({ resume }) {
           </Avatar>
         </ItemMedia>
         <ItemContent>
-          <ItemTitle>Resume.pdf</ItemTitle>
+          <ItemTitle>{name?.split(" ")[0]}_resume.pdf</ItemTitle>
           <ItemDescription>
-            Last updated :{new Date(metaData?.lastModified).toLocaleDateString()}
+            Last updated :
+            {new Date(metaData?.lastModified).toLocaleDateString()}
           </ItemDescription>
         </ItemContent>
         <ItemActions>
-          <Button size="icon-sm">
-            <Upload />
+          <input
+            id="resume"
+            type="file"
+            accept="application/pdf"
+            hidden
+            onChange={handleFileChange}
+          />
+          <Button variant={"outline"} asChild>
+            <Label htmlFor="resume">
+              {isPending ? (
+                <>
+                  <Loader2 className="size-5 animate-spin" /> Uploading...
+                </>
+              ) : (
+                <>
+                  <Upload />
+                  Reupload
+                </>
+              )}
+            </Label>
           </Button>
           <Button
             size="icon-sm"
