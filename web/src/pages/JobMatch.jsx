@@ -1,364 +1,34 @@
-import { JobCard } from "@/components/custom";
+import { JobCard, Loading } from "@/components/custom";
 import { Button } from "@/components/ui/button";
+import { useJob } from "@/hooks/useJob";
+import { setJobs, useStore } from "@/store/store";
 import { ArrowUpDown } from "lucide-react";
 import { ListFilter } from "lucide-react";
+import { useEffect } from "react";
 
 function JobMatch() {
-  // temp job data
-  const jobs = [
+  // get jobs 
+  const {
+    getAllJobs: { data, isLoading },
+  } = useJob(
     {
-      _id: "68ebbf08befdab22dd32e91d",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
+      pageNo: 1,
+      limit: 10,
     },
-    {
-      _id: "68ebc2a8c877e4b67d4c93bb",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2aac877e4b67d4c93bc",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2adc877e4b67d4c93bd",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2b0c877e4b67d4c93be",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2b3c877e4b67d4c93bf",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2b8c877e4b67d4c93c0",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2bbc877e4b67d4c93c1",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2bdc877e4b67d4c93c2",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2bfc877e4b67d4c93c3",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2c2c877e4b67d4c93c4",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2c6c877e4b67d4c93c5",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-    {
-      _id: "68ebc2c8c877e4b67d4c93c6",
-      jobId: "4258062434",
-      title: "Full Stack Developer (MERN + Next.js + Python)",
-      companyName: "Cloudely, Inc",
-      savedJob: false,
-      score: {
-        overallScore: 75,
-        relevanceScore: 70,
-        skillsScore: 80,
-      },
-      url: "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-    },
-  ];[
-            {
-                "_id": "68ebbf08befdab22dd32e91d",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2a8c877e4b67d4c93bb",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2aac877e4b67d4c93bc",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2adc877e4b67d4c93bd",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2b0c877e4b67d4c93be",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2b3c877e4b67d4c93bf",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2b8c877e4b67d4c93c0",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2bbc877e4b67d4c93c1",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2bdc877e4b67d4c93c2",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2bfc877e4b67d4c93c3",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2c2c877e4b67d4c93c4",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2c6c877e4b67d4c93c5",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            },
-            {
-                "_id": "68ebc2c8c877e4b67d4c93c6",
-                "jobId": "4258062434",
-                "title": "Full Stack Developer (MERN + Next.js + Python)",
-                "companyName": "Cloudely, Inc",
-                "savedJob": false,
-                "score": {
-                    "overallScore": 75,
-                    "relevanceScore": 70,
-                    "skillsScore": 80
-                },
-                "url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4258062434",
-                "createdAt": "2025-10-12T14:45:28.511Z"
-            }
-        ]
+    true
+  );
+  // get jobs from store  
+  const jobs = useStore(state=>state.jobs) 
+
+  // set jobs on store 
+  useEffect(()=>{
+    if(data){
+      setJobs(data?.data)
+    }
+  },[data]);
+
+  // show loading state
+  if (isLoading) return <Loading />;
 
   return (
     <section className="overflow-y-hidden h-full w-full p-3">
@@ -383,9 +53,9 @@ function JobMatch() {
         </div>
       </div>
       {/* list of jobs */}
-      <div className="w-full mt-6 grid sm:grid-cols-3 sm:grid-rows-1 grid-cols-1 grid-rows-3 gap-4">
+      <div className="w-full mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {jobs?.map((job) => (
-          <JobCard job={job} key={job._id} />
+          <JobCard job={job} key={job?._id} />
         ))}
       </div>
     </section>
