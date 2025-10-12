@@ -11,6 +11,7 @@ import { PencilRuler, SaveIcon } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import useUser from "@/hooks/useUser";
 import { setProfile } from "@/store/store";
+import { PlusCircle } from "lucide-react";
 
 function SkillProgress({ skills }) {
   const [skillsEditable, setSkillsEditable] = useState(false);
@@ -75,7 +76,7 @@ function SkillProgress({ skills }) {
       </div>
       <form
         onSubmit={handleSubmit(handleSkillsUpdate)}
-        className="w-full max-w-3xl mx-auto rounded-2xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-3 "
+        className="w-full max-w-3xl mx-auto rounded-2xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4"
       >
         {fields?.map((skill, index) => (
           <div
@@ -129,6 +130,19 @@ function SkillProgress({ skills }) {
             )}
           </div>
         ))}
+        {skillsEditable && (
+          <div className="flex mt-2 rounded-lg items-center justify-center">
+            <Button
+              type="button"
+              variant={"outline"}
+              onClick={() => append({ name: "new skill", score: 5 })}
+              className={" w-full h-full border-2 border-dashed"}
+            >
+              <PlusCircle className="size-5" /> Add Skills
+            </Button>
+          </div>
+        )}
+
         {/* button  */}
         <div className="flex gap-2 items-center sm:justify-end w-full md:col-span-3 sm:col-end-2 justify-center mt-4">
           {skillsEditable && (
