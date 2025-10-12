@@ -38,6 +38,7 @@ const scanNewJob = asyncHandler(async (req, res) => {
     url: validate.data.url,
     companyName: validate.data.companyName,
     userId: req.user._id,
+    logo: validate.data.logo,
     ...aiRes,
   });
   if (!job) {
@@ -62,14 +63,22 @@ const getJobs = asyncHandler(async (req, res) => {
       $sort: { createdAt: -1 }, // latest first
     },
     {
+      $skip: (pageNo - 1) * limit, // skip to page
+    },
+    {
+      $limit: limit, // limit
+    },
+    {
       $project: {
         _id: 1,
         jobId: 1,
         url: 1,
+        logo: 1,
         companyName: 1,
         title: 1,
         savedJob: 1,
         score: 1,
+        createdAt: 1,
       }, // project min filed
     },
   ]);
@@ -100,7 +109,7 @@ const getJobs = asyncHandler(async (req, res) => {
   }
   return res.status(200).json(
     new apiResponse(200, "all job by user fetched successfully", {
-      totalJobs: totalJobs[0].totalDocs,
+      totalJobs: totalJobs[0]?.totalDocs || [],
       totalSavedJobs: totalJobs[0].total,
       jobs,
     })
@@ -145,4 +154,4 @@ const deleteJob = asyncHandler(async (req, res) => {
   return res.status(200).json(new apiResponse(200, "job delete sussussfull", null));
 });
 
-export { scanNewJob, getJobs, getJobWithId, savedJobs,deleteJob };
+export { scanNewJob, getJobs, getJobWithId, savedJobs, deleteJob };
