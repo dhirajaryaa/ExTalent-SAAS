@@ -14,6 +14,7 @@ import {
 } from "./pages";
 import { Loading } from "./components/custom";
 import authChecker from "./lib/authChecker";
+import { Toaster } from "./components/ui/sonner";
 
 // query client create
 const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <Suspense fallback={<Loading />}>
           <RouterProvider router={appRouter} />
+          <Toaster richColors  />
         </Suspense>
       </QueryClientProvider>
   </StrictMode>
