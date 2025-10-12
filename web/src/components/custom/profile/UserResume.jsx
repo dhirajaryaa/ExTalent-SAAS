@@ -15,13 +15,26 @@ import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import useUser from "@/hooks/useUser";
 import { setProfile } from "@/store/store";
+import { toast } from "sonner";
 
 function UserResume({ resume, name }) {
   const [metaData, setMetaData] = useState(null);
   const {
     userResumeUpload: { mutateAsync: resumeUpload, isPending },
     userProfile: { refetch },
+    userResumeEvaluation: {
+      mutateAsync: resumeEvaluation,
+      isPending: evaluationPending,
+    },
   } = useUser(false);
+
+  const handleAnalyzeResume = async () => {
+    const res = await resumeEvaluation();
+    if (res.isSuccess) {
+      const profile = await refetch();
+      setProfile(profile?.data?.data);
+    }
+  };
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
@@ -31,6 +44,20 @@ function UserResume({ resume, name }) {
       if (res.isSuccess) {
         const profile = await refetch();
         setProfile(profile?.data?.data);
+        toast.success("Resume Uploaded successfully 🎉", {
+          action: {
+            label: "Evaluate Resume",
+            onClick: async () => {
+              toast.promise(handleAnalyzeResume, {
+                loading: "Evaluating Resume...",
+                success: () => {
+                  return `Resume Evaluated successfully 🎉`;
+                },
+                error: "Something went wrong!",
+              });
+            },
+          },
+        });
       }
     }
   };
