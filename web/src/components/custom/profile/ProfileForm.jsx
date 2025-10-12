@@ -4,7 +4,7 @@ import { Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import updateProfileSchema from "@/schema/user.schema";
+import {updateProfileSchema} from "@/schema/user.schema";
 import useUser from "@/hooks/useUser";
 import { Loader2 } from "lucide-react";
 import { setProfile } from "@/store/store";
