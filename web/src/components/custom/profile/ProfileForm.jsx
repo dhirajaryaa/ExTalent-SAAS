@@ -1,64 +1,88 @@
 import { Button } from "@/components/ui/button";
 import { Field } from "..";
-import { Save } from "lucide-react";
+import { Save, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {updateProfileSchema} from "@/schema/user.schema";
+import { updateProfileSchema } from "@/schema/user.schema";
 import useUser from "@/hooks/useUser";
-import { Loader2 } from "lucide-react";
 import { setProfile } from "@/store/store";
 
-function ProfileForm({ profile,editable,setEditable }) {
+function ProfileForm({ profile, editable, setEditable }) {
   const {
     userProfileUpdate: { mutateAsync, isPending },
     userProfile: { refetch },
   } = useUser(false);
-  // react form
+
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors, dirtyFields },
   } = useForm({
     resolver: zodResolver(updateProfileSchema),
     mode: "onChange",
   });
 
-  // set value when profile data arrived
+  // Sync form values when profile updates
   useEffect(() => {
     if (profile) {
-      reset({
-        name: profile.name ?? "-",
-        email: profile.email ?? "-",
-        githubUsername: profile.githubUsername ?? "-",
-        location: profile.location ?? "-",
-        blogLink: profile.blogLink ?? "-",
-        bio: profile.bio ?? "-",
-      });
+      reset(
+        {
+          name: profile.name ?? "-",
+          email: profile.email ?? "-",
+          githubUsername: profile.githubUsername ?? "-",
+          location: profile.location ?? "-",
+          blogLink: profile.blogLink ?? "-",
+          bio: profile.bio ?? "-",
+        },
+        { keepDirty: false } // ensure dirty tracking resets
+      );
     }
   }, [profile, reset]);
 
-  // handle profile update
-
   const handleFormSubmit = async (data) => {
+    const values = getValues();
+
+    // Extract only dirty fields
     const updatableFields = Object.keys(dirtyFields).reduce((acc, key) => {
-      acc[key] = data[key];
+      acc[key] = values[key];
       return acc;
     }, {});
-    // console.log(updatableFields);
-    if (!updatableFields) {
-      reset(data);
+
+    // If nothing changed, skip update
+    if (Object.keys(updatableFields).length === 0) {
+      console.log("No fields were modified.");
       setEditable(false);
+      reset(values, { keepDirty: false });
       return;
-    } else {      
+    }
+
+    try {
       const res = await mutateAsync(updatableFields);
+
       if (res?.isSuccess) {
-        const profile = await refetch();
-        setProfile(profile?.data?.data);
-        reset(data);
+        // Fetch latest profile data
+        const profileResponse = await refetch();
+        const updatedProfile = profileResponse?.data?.data;
+        setProfile(updatedProfile);
+        reset(
+          {
+            name: updatedProfile.name ?? "-",
+            email: updatedProfile.email ?? "-",
+            githubUsername: updatedProfile.githubUsername ?? "-",
+            location: updatedProfile.location ?? "-",
+            blogLink: updatedProfile.blogLink ?? "-",
+            bio: updatedProfile.bio ?? "-",
+          },
+          { keepDirty: false }
+        );
+
         setEditable(false);
       }
+    } catch (error) {
+      console.error("Update failed:", error);
     }
   };
 
@@ -71,56 +95,25 @@ function ProfileForm({ profile,editable,setEditable }) {
       </h2>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="w-full max-w-3xl mx-auto mt-4 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-3 "
+        className="w-full max-w-3xl mx-auto mt-4 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-3"
       >
-        <Field
-          label="Name"
-          name="name"
-          errors={errors}
-          editable={editable}
-          register={register}
-        />
-        <Field
-          label="Email Id"
-          name="email"
-          errors={errors}
-          editable={editable}
-          register={register}
-        />
-        <Field
-          label="Location"
-          name="location"
-          editable={editable}
-          errors={errors}
-          register={register}
-        />
-        <Field
-          label="Blog"
-          name="blogLink"
-          editable={editable}
-          register={register}
-          errors={errors}
-        />
-        <Field
-          label="Bio"
-          name="bio"
-          editable={editable}
-          className={"md:col-span-2"}
-          register={register}
-          errors={errors}
-        />
-        {/* submit button */}
+        <Field label="Name" value={profile?.name} name="name" errors={errors} editable={editable} register={register} />
+        <Field label="Email Id" value={profile?.email} name="email" errors={errors} editable={editable} register={register} />
+        <Field label="Location" value={profile?.location} name="location" errors={errors} editable={editable} register={register} />
+        <Field label="Blog" value={profile?.blogLink} name="blogLink" errors={errors} editable={editable} register={register} />
+        <Field label="Bio" value={profile?.bio} name="bio" errors={errors} editable={editable} className="md:col-span-2" register={register} />
+
+        {/* Submit Button */}
         {editable && (
-          <div className=" space-x-4 mt-2 md:col-span-2 md:col-end-3 justify-self-center md:justify-self-end-safe">
-            <Button size={"sm"} className={"cursor-pointer"} type="submit">
+          <div className="space-x-4 mt-2 md:col-span-2 md:col-end-3 justify-self-center md:justify-self-end-safe">
+            <Button size="sm" type="submit" className="cursor-pointer">
               {isPending ? (
                 <>
                   <Loader2 className="animate-spin size-6" /> Updating
                 </>
               ) : (
                 <>
-                  <Save />
-                  Update
+                  <Save /> Update
                 </>
               )}
             </Button>

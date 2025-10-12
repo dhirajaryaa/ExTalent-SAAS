@@ -30,7 +30,7 @@ function UserProfile() {
   if (isLoading) {
     return <Loading />;
   }
-
+  if(!profile) return null;
   return (
     <section className="w-full h-full p-3">
       {/* user top section */}

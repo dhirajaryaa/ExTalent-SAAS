@@ -47,7 +47,6 @@ function SkillProgress({ skills }) {
 
   //! handle skills update
   const handleSkillsUpdate = async (data) => {
-    console.log(data);
     const res = await mutateAsync(data);
     if (res?.isSuccess) {
       const profile = await refetch();
