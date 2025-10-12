@@ -52,9 +52,6 @@ const getJobs = asyncHandler(async (req, res) => {
   const pageNo = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   // get jobs
-  if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
-    throw new apiError(400, "Invalid user id", "VALIDATION");
-  }
   const jobs = await jobModal.aggregate([
     {
       $match: { userId: req.user._id }, // match user id
@@ -109,8 +106,8 @@ const getJobs = asyncHandler(async (req, res) => {
   }
   return res.status(200).json(
     new apiResponse(200, "all job by user fetched successfully", {
-      totalJobs: totalJobs[0]?.totalDocs || [],
-      totalSavedJobs: totalJobs[0].total,
+      totalJobs: totalJobs[0]?.totalDocs || 0,
+      totalSavedJobs: totalJobs[0]?.total || 0,
       jobs,
     })
   );
