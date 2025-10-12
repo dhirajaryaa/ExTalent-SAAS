@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import {
   Dashboard,
   Home,
+  JobMatch,
   LoginPage,
   NotFound,
   Onboarding,
@@ -44,6 +45,10 @@ const appRouter = createBrowserRouter([
       {
         path: "profile", //* user profile page
         element: <UserProfile />,
+      },
+      {
+        path: "job-match", //* job match page
+        element: <JobMatch />,
       },
     ],
   },

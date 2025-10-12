@@ -31,12 +31,12 @@ function AppSidebar() {
     },
     {
       title: "Job Matches",
-      url: "/jobs",
+      url: "/job-match",
       icon: BriefcaseBusinessIcon,
     },
     {
       title: "Saved Jobs",
-      url: "/saved-jobs",
+      url: "/saved-job",
       icon: StarIcon,
     },
   ];
