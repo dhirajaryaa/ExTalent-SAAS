@@ -1,8 +1,8 @@
 import api from "./baseApi";
 
 // get all jobs
-const getJobsAPI = async (pageNo = 1, limit = 10) => {
-  const res = api.get(`/jobs?page=${pageNo}&limit=${limit}`);
+const getJobsAPI = async (pageNo = 1, limit = 10) => {  
+  const res = await api.get(`/jobs?page=${pageNo}&limit=${limit}`);  
   return res.data;
 };
 // get job with id
