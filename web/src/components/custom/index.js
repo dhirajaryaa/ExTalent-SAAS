@@ -17,6 +17,8 @@ import ProfileForm from "./profile/ProfileForm";
 import UserResume from "./profile/UserResume";
 import DangerZone from "./profile/DangerZone";
 import SkillProgress from "./profile/SkillProgress";
+// job match 
+import JobCard from "./job/JobCard";
 
 export {
   Navbar,
@@ -33,5 +35,6 @@ export {
   ProfileForm,
   UserResume,
   DangerZone,
-  SkillProgress
+  SkillProgress,
+  JobCard
 };
