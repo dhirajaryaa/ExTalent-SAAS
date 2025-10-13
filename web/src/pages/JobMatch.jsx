@@ -2,12 +2,19 @@ import { JobCard, Loading } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useJob } from "@/hooks/useJob";
 import { setJobs, useStore } from "@/store/store";
-import { ArrowUpDown } from "lucide-react";
-import { ListFilter } from "lucide-react";
+import { ArrowUpDown, ArrowUpRightIcon, ListFilter,BriefcaseBusiness } from "lucide-react";
 import { useEffect } from "react";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 
 function JobMatch() {
-  // get jobs 
+  // get jobs
   const {
     getAllJobs: { data, isLoading },
   } = useJob(
@@ -17,19 +24,19 @@ function JobMatch() {
     },
     true
   );
-  // get jobs from store  
-  const jobs = useStore(state=>state.jobs) 
+  // get jobs from store
+  const jobs = useStore((state) => state.jobs);
 
-  // set jobs on store 
-  useEffect(()=>{
-    if(data){
-      setJobs(data?.data)
+  // set jobs on store
+  useEffect(() => {
+    if (data) {
+      setJobs(data?.data);
     }
-  },[data]);
+  }, [data]);
 
   // show loading state
   if (isLoading) return <Loading />;
-
+  
   return (
     <section className="overflow-y-hidden h-full w-full p-3">
       {/* filter and title   */}
@@ -54,9 +61,35 @@ function JobMatch() {
       </div>
       {/* list of jobs */}
       <div className="w-full mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {jobs?.map((job) => (
-          <JobCard job={job} key={job?._id} />
-        ))}
+        {jobs.length === 0 ? (
+          <Empty className={"col-span-3 mt-8"}>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <BriefcaseBusiness />
+              </EmptyMedia>
+              <EmptyTitle>No Job Score Yet</EmptyTitle>
+              <EmptyDescription>
+                You haven&apos;t scanned any jobs yet. Get started by scan your
+                first job.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button>Scan Job Now</Button>
+            </EmptyContent>
+            <Button
+              variant="link"
+              asChild
+              className="text-muted-foreground"
+              size="sm"
+            >
+              <a href="#">
+                Learn More <ArrowUpRightIcon />
+              </a>
+            </Button>
+          </Empty>
+        ) : (
+          jobs.map((job) => <JobCard job={job} key={job?._id} />)
+        )}
       </div>
     </section>
   );
