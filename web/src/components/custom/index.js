@@ -19,6 +19,8 @@ import DangerZone from "./profile/DangerZone";
 import SkillProgress from "./profile/SkillProgress";
 // job match 
 import JobCard from "./job/JobCard";
+import CircularProgress from "./job/CircularProgress";
+import MatchScore from "./job/MatchScore";
 
 export {
   Navbar,
@@ -36,5 +38,7 @@ export {
   UserResume,
   DangerZone,
   SkillProgress,
-  JobCard
+  JobCard,
+  CircularProgress,
+  MatchScore
 };
