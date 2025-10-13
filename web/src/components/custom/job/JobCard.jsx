@@ -35,7 +35,7 @@ function JobCard({ job }) {
       </ItemActions>
       <ItemFooter className={'flex flex-col gap-2'}>
         <ItemDescription className={'text-xs sm:text-sm flex items-center justify-between w-full'}>
-          <p>Match Score</p>
+          <span className="block">Match Score</span>
           <strong className="text-primary">{job?.score?.overallScore}%</strong>
         </ItemDescription>
         <Progress value={job?.score?.overallScore} />

@@ -2,7 +2,12 @@ import { JobCard, Loading } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import { useJob } from "@/hooks/useJob";
 import { setJobs, useStore } from "@/store/store";
-import { ArrowUpDown, ArrowUpRightIcon, ListFilter,BriefcaseBusiness } from "lucide-react";
+import {
+  ArrowUpDown,
+  ArrowUpRightIcon,
+  ListFilter,
+  BriefcaseBusiness,
+} from "lucide-react";
 import { useEffect } from "react";
 import {
   Empty,
@@ -17,13 +22,7 @@ function JobMatch() {
   // get jobs
   const {
     getAllJobs: { data, isLoading },
-  } = useJob(
-    {
-      pageNo: 1,
-      limit: 10,
-    },
-    true
-  );
+  } = useJob(true, { query: { pageNo: 1, limit: 10 } });
   // get jobs from store
   const jobs = useStore((state) => state.jobs);
 
@@ -36,7 +35,7 @@ function JobMatch() {
 
   // show loading state
   if (isLoading) return <Loading />;
-  
+
   return (
     <section className="overflow-y-hidden h-full w-full p-3">
       {/* filter and title   */}
