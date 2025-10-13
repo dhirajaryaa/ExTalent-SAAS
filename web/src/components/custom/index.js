@@ -21,6 +21,8 @@ import SkillProgress from "./profile/SkillProgress";
 import JobCard from "./job/JobCard";
 import CircularProgress from "./job/CircularProgress";
 import MatchScore from "./job/MatchScore";
+import SkillAnalysis from "./job/SkillAnalysis";
+import Recommendation from "./job/Recommendation";
 
 export {
   Navbar,
@@ -40,5 +42,7 @@ export {
   SkillProgress,
   JobCard,
   CircularProgress,
-  MatchScore
+  MatchScore,
+  SkillAnalysis,
+  Recommendation
 };

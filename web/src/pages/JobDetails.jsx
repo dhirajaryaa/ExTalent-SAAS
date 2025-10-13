@@ -1,30 +1,17 @@
-import { CircularProgress, Loading, MatchScore } from "@/components/custom";
+import { MatchScore, Recommendation, SkillAnalysis } from "@/components/custom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemHeader,
-  ItemMedia,
-  ItemTitle,
-} from "@/components/ui/item";
-import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { useJob } from "@/hooks/useJob";
 import { useStore } from "@/store/store";
-import { BadgeCheckIcon } from "lucide-react";
-import { ExternalLink } from "lucide-react";
-import { ArrowUpRight } from "lucide-react";
+import { Bookmark, ExternalLink } from "lucide-react";
 import { useParams } from "react-router";
 
 function JobDetails() {
@@ -105,25 +92,47 @@ function JobDetails() {
   return (
     <section className="overflow-y-hidden h-full w-full p-3">
       {/* job details  */}
-      <Card className={"w-full max-w-3xl mx-auto bg-muted/50"}>
-        <CardHeader >
-          <CardTitle>{job.title}</CardTitle>
-          <CardDescription>{job.companyName}</CardDescription>
-          <CardAction className={'col-span-3 w-full justify-center'}>
-            <Button size="sm" asChild>
-              <a href={job.url} target="_blank" rel="noopener noreferrer">
-                View Posting
+      <Card className={"w-full max-w-4xl border-0 shadow-none mx-auto"}>
+        <CardHeader
+          className={
+            "grid-cols-1 px-2 grid-rows-[auto_auto] sm:grid-cols-[auto_1fr]"
+          }
+        >
+          <img
+            src={job?.logo}
+            alt={job?.title}
+            className="size-14 sm:size-max rounded-lg col-start-1 row-start-1"
+          />
+          <div>
+            <CardTitle className={"text-lg sm:text-xl"}>{job?.title}</CardTitle>
+            <CardDescription className={"flex items-center gap-2"}>
+              {job?.companyName}
+            </CardDescription>
+
+            <Button asChild size="sm" className={"mt-2 mx-1"}>
+              <a href={job?.url} target="_blank" rel="noopener noreferrer">
                 <ExternalLink />
+                View Posting
               </a>
             </Button>
-          </CardAction>
+            <Button size="sm" className={"mt-2 mx-1"} variant={"outline"}>
+              <Bookmark />
+              Save Job
+            </Button>
+          </div>
         </CardHeader>
         <Separator />
         <CardContent>
+          {/* matchSkills  */}
           <MatchScore score={job?.score} />
+          {/* skills analyzed  */}
+          <SkillAnalysis
+            missingSkills={job?.missingSkills}
+            matchSkills={job?.matchSkills}
+          />
         </CardContent>
         <CardFooter>
-          <p>Card Footer</p>
+          <Recommendation recommendations={job.recommendations} />
         </CardFooter>
       </Card>
     </section>
