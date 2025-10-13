@@ -17,6 +17,12 @@ import ProfileForm from "./profile/ProfileForm";
 import UserResume from "./profile/UserResume";
 import DangerZone from "./profile/DangerZone";
 import SkillProgress from "./profile/SkillProgress";
+// job match 
+import JobCard from "./job/JobCard";
+import CircularProgress from "./job/CircularProgress";
+import MatchScore from "./job/MatchScore";
+import SkillAnalysis from "./job/SkillAnalysis";
+import Recommendation from "./job/Recommendation";
 
 export {
   Navbar,
@@ -33,5 +39,10 @@ export {
   ProfileForm,
   UserResume,
   DangerZone,
-  SkillProgress
+  SkillProgress,
+  JobCard,
+  CircularProgress,
+  MatchScore,
+  SkillAnalysis,
+  Recommendation
 };
