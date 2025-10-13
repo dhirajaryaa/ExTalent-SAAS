@@ -121,7 +121,9 @@ const getJobWithId = asyncHandler(async (req, res) => {
   if (!job) {
     throw new apiError(404, "job not found!");
   }
-  return res.status(200).json(new apiResponse(200, "all job by user fetched successfully", job));
+  return res
+    .status(200)
+    .json(new apiResponse(200, "job scan fetched successfully", job ? job[0] : job));
 });
 
 const savedJobs = asyncHandler(async (req, res) => {
