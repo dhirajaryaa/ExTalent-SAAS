@@ -1,20 +1,16 @@
-import { getJobsAPI } from "@/api/job.api";
+import { getJobAPI, getJobsAPI } from "@/api/job.api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useJob = (
-  query = { pageNo: 1, limit: 10},
-  enable = false,
-  jobId,
-) => {
+export const useJob = (enable, { query, jobId }) => {
   const getAllJobs = useQuery({
     queryKey: ["jobs"],
-    queryFn: ()=>getJobsAPI(query?.pageNo,query?.limit),
-    enabled:  enable,
+    queryFn: () => getJobsAPI(query?.pageNo, query?.limit),
+    enabled: query && enable,
   });
 
   const getJobWithId = useQuery({
     queryKey: ["jobs", jobId],
-    queryFn: () => getJobWithId(jobId),
+    queryFn: () => getJobAPI(jobId),
     enabled: jobId && enable,
   });
 
