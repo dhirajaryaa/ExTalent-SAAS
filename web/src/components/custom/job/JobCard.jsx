@@ -24,7 +24,7 @@ function JobCard({ job }) {
       </ItemMedia>
       <ItemContent>
         <ItemTitle>{job?.title}</ItemTitle>
-        <ItemDescription>{job.companyName}</ItemDescription>
+        <ItemDescription>{job?.companyName}</ItemDescription>
       </ItemContent>
       <ItemActions>
         <Button variant={"outline"} size={"sm"} asChild>
