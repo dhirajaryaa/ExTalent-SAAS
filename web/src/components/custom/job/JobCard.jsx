@@ -28,7 +28,7 @@ function JobCard({ job }) {
       </ItemContent>
       <ItemActions>
         <Button variant={"outline"} size={"sm"} asChild>
-          <Link to={`/job-match/${job?._id}`} state="View Job Match">
+          <Link to={`/job-match/${job?._id}`} state="Job Match Details">
           View <ArrowUpRight />
           </Link>
         </Button>

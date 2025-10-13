@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import {
   Dashboard,
   Home,
+  JobDetails,
   JobMatch,
   LoginPage,
   NotFound,
@@ -49,6 +50,10 @@ const appRouter = createBrowserRouter([
       {
         path: "job-match", //* job match page
         element: <JobMatch />,
+      },
+      {
+        path: "job-match/:jobId", //* job match view page
+        element: <JobDetails />,
       },
     ],
   },
