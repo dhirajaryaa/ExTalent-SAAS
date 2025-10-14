@@ -1,3 +1,6 @@
+/* font install  */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -10,7 +13,8 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
+--primary: #3a62e4;
+  /* --primary: oklch(0.208 0.042 265.755); */
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -46,7 +50,8 @@
   --card-foreground: oklch(0.984 0.003 247.858);
   --popover: oklch(0.208 0.042 265.755);
   --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
+  --primary: #3a62e4;
+  /* --primary: oklch(0.929 0.013 255.508); */
   --primary-foreground: oklch(0.208 0.042 265.755);
   --secondary: oklch(0.279 0.041 260.031);
   --secondary-foreground: oklch(0.984 0.003 247.858);
@@ -120,4 +125,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+ /* custom font family set  */
+@theme {
+  --font-family: "DM Sans", sans-serif;
 }

@@ -4,6 +4,12 @@ import path from "path";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+  // change default dev server port 
+    dev: {
+    server: {
+      port: 4000,
+    },
+  },
   modules: ["@wxt-dev/module-react"],
   alias: {
     "@": path.resolve(__dirname, "./"),
