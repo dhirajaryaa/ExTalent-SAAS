@@ -1,5 +1,5 @@
 import axios from "axios";
-import { storage } from "#import";
+import { storage } from "#imports";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API || "http://localhost:3000",
@@ -12,8 +12,8 @@ export const api = axios.create({
 // intercept req and attach token
 api.interceptors.request.use(async (config) => {
   const token = await storage.getItem("sync:token");
-  console.info("✅sync Token is: ", token);
   if (token) {
+    console.info("✅sync Token is: ", token);
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

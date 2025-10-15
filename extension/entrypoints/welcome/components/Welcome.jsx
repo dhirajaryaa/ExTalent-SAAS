@@ -6,8 +6,15 @@ import { ArrowRight } from "lucide-react";
 import Step from "./Step";
 import { Github } from "lucide-react";
 import { ExternalLink } from "lucide-react";
+import { authChecker } from "@/lib/authChecker";
 
 export default function WelcomePage() {
+
+ async function authCheck (){
+  console.log("I am working");
+  
+  await authChecker()
+  }
   return (
     <>
       {/* Logo */}
@@ -50,14 +57,14 @@ export default function WelcomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-8 justify-center pt-4">
-            <Button size="lg" className={"sm:text-base"} asChild>
-              <a
+            <Button size="lg" className={"sm:text-base"} onClick={authCheck}>
+              {/* <a
                 href={`${import.meta.env.VITE_DASHBOARD_LINK}/login`}
                 target="_blank"
                 rel="noreferrer"
-              >
+              > */}
               <Github className="sm:size-5"  fill="currentColor"/>  Sign in & Connect
-              </a>
+              {/* </a> */}
             </Button>
             <Button
               variant="outline"
