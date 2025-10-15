@@ -16,7 +16,7 @@ export default defineConfig({
   },
   manifest: ({ browser, manifestVersion, mode, command }) => {
     return {
-      name: "ExTalent: Job score Generator",
+      name: "ExTalent",
       short_name: "ExTalent",
       version: "1.0.0",
       description: "Job score Generator",
