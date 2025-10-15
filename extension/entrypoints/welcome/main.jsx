@@ -1,10 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import "../../assets/index.css"; //don't use @import method 
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "../../assets/index.css";
+import WelcomePage from "./components/Welcome";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <div >
+      <WelcomePage />
+    </div>
+  </React.StrictMode>
 );
