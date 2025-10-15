@@ -5,8 +5,8 @@ import WelcomePage from "./components/Welcome";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div >
+    <section className="w-full min-h-screen h-auto flex items-center justify-center flex-col mx-auto bg-gradient-to-b from-muted  to-primary/20">
       <WelcomePage />
-    </div>
+    </section>
   </React.StrictMode>
 );
