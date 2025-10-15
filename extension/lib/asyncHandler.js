@@ -6,7 +6,7 @@ export const asyncHandler = (promise, context, options = {}) => {
     })
     .catch((err) => {
       if (context) err.context = context;
-      if (logError && import.meta.env.VITE_APP_ENV === "development") {
+      if (logError && import.meta.env.DEV) {
         console.error(`[${context}]`, err);
       }
       return { success: false, data: null, error: err };
