@@ -3,11 +3,17 @@ import apiError from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
 import userModel from "../user/user.model.js";
 import generateAccessAndRefreshToken from "../lib/generateToken.js";
-import { client_url, cookiesOptions } from "../config/env.js";
+import { client_url, cookiesOptions, extCookiesOptions } from "../config/env.js";
 
 const githubOauthLogin = asyncHandler(async (req, res) => {
   const { _json: profile } = req.user;
   const token = req.authInfo;
+  // check source valid or not  
+  const source = req.query.state;
+  if(source !== "dashboard" && source !== "extension") {
+    throw new apiError(400, "invalid source!", "VALIDATION");
+  };
+
   if (!profile) {
     throw new apiError(404, "user profile not found!", "VALIDATION");
   }
@@ -34,14 +40,32 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
     throw new apiError(500, "Something went wrong!");
   }
   // save token in db
-  await userModel.findByIdAndUpdate(user._id, {
-    refreshToken,
-  });
+ const loginUser =  await userModel.findByIdAndUpdate(
+    user._id,
+    source === "extension" ? { extRefreshToken: refreshToken } : { refreshToken: refreshToken },
+    { new: true , select: "-githubId -githubToken -refreshToken -extRefreshToken -isDeleted -expireAt" }
+  );
   //   set cookies
-  res.cookie("accessToken", accessToken, cookiesOptions);
-  res.cookie("refreshToken", refreshToken, cookiesOptions);
+  res.cookie(
+    "accessToken",
+    accessToken,
+    source === "extension" ? extCookiesOptions : cookiesOptions
+  );
+  res.cookie(
+    "refreshToken",
+    refreshToken,
+    source === "extension" ? extCookiesOptions : cookiesOptions
+  );
   //? return redirect
-  return res.status(200).redirect(`${client_url}/dashboard`);
+  return source === "extension" ?
+  res.status(200).json(
+    new apiResponse(200, "user login successful", {
+      accessToken,
+      refreshToken,
+      user:loginUser
+    })
+  ):
+  res.status(302).redirect(`${client_url}/dashboard`)
 });
 
 // logout
@@ -54,8 +78,8 @@ const userLogout = asyncHandler(async (req, res) => {
     refreshToken: "",
   });
   //   clear cookies
-  res.clearCookie("accessToken", "", cookiesOptions);
-  res.clearCookie("refreshToken", "", cookiesOptions);
+  res.clearCookie("accessToken", cookiesOptions);
+  res.clearCookie("refreshToken", cookiesOptions);
   //? return res
   return res.status(200).json(new apiResponse(200, "user logout successful"));
 });
@@ -73,14 +97,12 @@ const currentLoginUser = asyncHandler(async (req, res) => {
     throw new apiError(404, "user not found!");
   }
   //? return res
-  return res
-    .status(200)
-    .json(
-      new apiResponse(200, "login user profile successful", {
-        user: loginUser,
-        accessToken: req.cookies?.accessToken || null,
-      })
-    );
+  return res.status(200).json(
+    new apiResponse(200, "login user profile successful", {
+      user: loginUser,
+      accessToken: req.cookies?.accessToken || null,
+    })
+  );
 });
 
 export { githubOauthLogin, userLogout, currentLoginUser };

@@ -48,5 +48,10 @@ export const {
 export const cookiesOptions = {
   httpOnly: true,
   secure: node_env === "production" ? true : false,
-  sameSite: "strict",
+  sameSite: "lax",
+};
+
+export const extCookiesOptions = {
+  httpOnly: false,
+  secure: node_env === "production" ? true : false,
 };
