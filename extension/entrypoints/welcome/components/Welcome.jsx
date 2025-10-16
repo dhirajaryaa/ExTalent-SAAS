@@ -2,18 +2,15 @@
 import { Button } from "@/components/ui/button";
 import logoImg from "@/assets/logo.png";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
 import Step from "./Step";
-import { Github } from "lucide-react";
-import { ExternalLink } from "lucide-react";
-import { authChecker } from "@/lib/authChecker";
+import { ExternalLink, Github } from "lucide-react";
+import { browser } from "#imports";
 
 export default function WelcomePage() {
-
- async function authCheck (){
-  console.log("I am working");
-  
-  await authChecker()
+  async function signInWithGithub() {
+    console.log("I am working ❤️");
+    const link = `${import.meta.env.VITE_GITHUB_LOGIN_URL}?source=extension`;
+    browser.windows.create({ url: link, focused: true });
   }
   return (
     <>
@@ -57,13 +54,14 @@ export default function WelcomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-8 justify-center pt-4">
-            <Button size="lg" className={"sm:text-base"} onClick={authCheck}>
+            <Button size="lg" className={"sm:text-base"} onClick={signInWithGithub}>
               {/* <a
                 href={`${import.meta.env.VITE_DASHBOARD_LINK}/login`}
                 target="_blank"
                 rel="noreferrer"
               > */}
-              <Github className="sm:size-5"  fill="currentColor"/>  Sign in & Connect
+              <Github className="sm:size-5" fill="currentColor" /> Sign in &
+              Connect
               {/* </a> */}
             </Button>
             <Button
