@@ -1,5 +1,5 @@
 import { authChecker } from "@/lib/authChecker";
-import { browser } from "wxt/browser";
+import { browser } from "#imports";
 
 export default defineBackground(() => {
   // check auth user when browser is ready
