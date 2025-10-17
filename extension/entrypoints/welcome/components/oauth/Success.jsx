@@ -11,7 +11,7 @@ function Success({ user = { name: "Dhiraj Arya" } }) {
         <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold text-center">
           Welcome, <span className="text-primary">{user?.name}</span>
         </h1>
-        <strong className="text-center text-2xl sm:text-4xl md:text-5xl my-4">
+        <strong className="text-center text-xl sm:text-4xl md:text-5xl my-4">
           Almost Done ✅
         </strong>
         <p className="text-sm sm:text-xl text-muted-foreground max-w-3xl text-center">
