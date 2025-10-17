@@ -1,30 +1,24 @@
 // src/pages/ExtensionWelcome.tsx
 import { Button } from "@/components/ui/button";
-import logoImg from "@/assets/logo.png";
 import { Card, CardContent } from "@/components/ui/card";
 import Step from "./Step";
 import { ExternalLink, Github } from "lucide-react";
 import { browser } from "#imports";
+import Logo from "@/components/custom/Logo";
+import Footer from "@/components/custom/Footer";
 
-export default function WelcomePage() {
+export default function Welcome() {
   async function signInWithGithub() {
-    console.log("I am working ❤️");
-    const link = `${import.meta.env.VITE_GITHUB_LOGIN_URL}?source=extension`;
-    browser.windows.create({ url: link, focused: true });
+    const extId = browser.runtime.id;
+    const oauthLink = `${
+      import.meta.env.VITE_GITHUB_LOGIN_URL
+    }?source=extension&extId=${extId}`;
+    window.location.href = oauthLink;
   }
   return (
     <>
       {/* Logo */}
-      <div className="flex items-center space-x-2 mb-5 justify-center">
-        <img
-          src={logoImg}
-          alt="ExTalent Logo"
-          className="size-10 sm:size-12 rounded-full"
-        />
-        <span className="text-xl sm:text-3xl cursor-pointer font-semibold capitalize">
-          ExTalent
-        </span>
-      </div>
+      <Logo />
 
       {/* Welcome Card */}
       <Card className={"bg-full border-0 shadow-none"}>
@@ -54,15 +48,13 @@ export default function WelcomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-8 justify-center pt-4">
-            <Button size="lg" className={"sm:text-base"} onClick={signInWithGithub}>
-              {/* <a
-                href={`${import.meta.env.VITE_DASHBOARD_LINK}/login`}
-                target="_blank"
-                rel="noreferrer"
-              > */}
-              <Github className="sm:size-5" fill="currentColor" /> Sign in &
-              Connect
-              {/* </a> */}
+            <Button
+              size="lg"
+              className={"sm:text-base"}
+              onClick={signInWithGithub}
+            >
+              <Github className="sm:size-5" fill="currentColor" /> Sign in
+              Github
             </Button>
             <Button
               variant="outline"
@@ -84,17 +76,7 @@ export default function WelcomePage() {
       </Card>
 
       {/* Footer */}
-      <footer className="mt-8 text-sm text-foreground/80 text-center">
-        Need help?{" "}
-        <a
-          href={`${import.meta.env.VITE_SUPPORT_LINK}`}
-          target="_blank"
-          rel="noreferrer"
-          className="font-medium underline underline-offset-4 text-primary hover:underline"
-        >
-          Visit our Help Center
-        </a>
-      </footer>
+      <Footer />
     </>
   );
 }
