@@ -43,10 +43,6 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
-    extRefreshToken: {
-      type: String,
-      default: "",
-    },
     isDeleted: {
       type: Boolean,
       default: false,

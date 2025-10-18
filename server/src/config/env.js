@@ -50,8 +50,3 @@ export const cookiesOptions = {
   secure: node_env === "production" ? true : false,
   sameSite: "lax",
 };
-
-export const extCookiesOptions = {
-  httpOnly: false,
-  secure: node_env === "production" ? true : false,
-};
