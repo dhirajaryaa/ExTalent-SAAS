@@ -3,17 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Step from "./Step";
 import { ExternalLink, Github } from "lucide-react";
-import { browser } from "#imports";
 import Logo from "@/components/custom/Logo";
 import Footer from "@/components/custom/Footer";
 
 export default function Welcome() {
   async function signInWithGithub() {
-    const extId = browser.runtime.id;
     const oauthLink = `${
       import.meta.env.VITE_GITHUB_LOGIN_URL
-    }?source=extension&extId=${extId}`;
-    window.location.href = oauthLink;
+    }?source=extension`;
+    // open login page
+    window.open(oauthLink, "_blank");
   }
   return (
     <>
