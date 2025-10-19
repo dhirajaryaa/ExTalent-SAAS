@@ -1,4 +1,5 @@
 // import { browser, storage } from "#imports";
+import { fetchAuthUser } from "@/api/auth.api";
 import { setLocalStorage } from "@/utils/extStorage";
 
 export default defineContentScript({
@@ -17,6 +18,12 @@ export default defineContentScript({
           refreshToken: event.data.refreshToken,
           syncedAt: new Date().toISOString(),
         });
+
+        // get user info 
+        const user = await fetchAuthUser();
+
+        // set user info on storage
+        await setLocalStorage("user", user?.data?.user);
 
         setTimeout(() => window.close(), 4000);
       }
