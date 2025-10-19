@@ -21,6 +21,7 @@ export default defineContentScript({
           "local:refreshToken",
           JSON.stringify(event.data.refreshToken)
         );
+        await storage.setItem("local:syncedAt", new Date().toISOString());
 
         setTimeout(() => window.close(), 4000);
       }

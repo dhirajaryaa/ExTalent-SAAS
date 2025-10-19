@@ -10,7 +10,13 @@ const authChecker = async () => {
       //! send auth token to extension sync
       const params = new URLSearchParams(window.location.search);
       const source = params.get("source");
-      if (source === "extension") {
+      const isExtensionMode =
+        source === "extension" ||
+        sessionStorage.getItem("isExtensionSource") === "true";
+
+      if (isExtensionMode) {
+        // Set flag for future refreshes
+        sessionStorage.setItem("isExtensionSource", "true");
         // Wait for extension to say it's ready
         window.addEventListener("message", (event) => {
           if (event.data.type === "EXTENSION_READY") {

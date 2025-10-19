@@ -48,7 +48,7 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
   res.cookie("accessToken", accessToken, cookiesOptions);
   res.cookie("refreshToken", refreshToken, cookiesOptions);
   //? return redirect
-  return res.status(302).redirect(`${client_url}/dashboard?source=${source}`);
+  return res.status(303).redirect(`${client_url}/dashboard?source=${source}`);
 });
 
 // logout
