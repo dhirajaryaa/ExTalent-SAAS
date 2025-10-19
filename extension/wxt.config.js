@@ -29,7 +29,12 @@ export default defineConfig({
         'contentSettings',
         "storage",
       ],
-       host_permissions: ['http://localhost/*']
+       host_permissions: [
+        "http://localhost/*",
+        "https://localhost/*",
+        "https://dhirajarya.xyz/*",
+        "https://*.dhirajarya.xyz/*",
+      ],
     };
   },
   vite: () => ({
