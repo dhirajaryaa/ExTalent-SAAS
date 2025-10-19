@@ -1,4 +1,6 @@
-import { browser, storage } from "#imports";
+// import { browser, storage } from "#imports";
+import { setLocalStorage } from "@/utils/extStorage";
+
 export default defineContentScript({
   matches: [`${import.meta.env.VITE_TOKEN_SYNC_DASHBOARD_URL}`],
   run_at: "document_idle",
@@ -8,20 +10,13 @@ export default defineContentScript({
       if (event.origin !== window.location.origin) return;
       if (event.data.type === "EXT_AUTH") {
         console.log("Auth token received");
-        // console.log(event.data);
-        const getToken = await storage.getItem("sync:token");
-        console.log("getToken✅: ", getToken);
 
         // set token on storage
-        await storage.setItem(
-          "local:accessToken",
-          JSON.stringify(event.data.accessToken)
-        );
-        await storage.setItem(
-          "local:refreshToken",
-          JSON.stringify(event.data.refreshToken)
-        );
-        await storage.setItem("local:syncedAt", new Date().toISOString());
+        await setLocalStorage("token", {
+          accessToken: event.data.accessToken,
+          refreshToken: event.data.refreshToken,
+          syncedAt: new Date().toISOString(),
+        });
 
         setTimeout(() => window.close(), 4000);
       }
