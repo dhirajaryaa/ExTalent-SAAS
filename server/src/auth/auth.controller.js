@@ -8,6 +8,12 @@ import { client_url, cookiesOptions } from "../config/env.js";
 const githubOauthLogin = asyncHandler(async (req, res) => {
   const { _json: profile } = req.user;
   const token = req.authInfo;
+  // check source valid or not
+  const source = req.query.state;
+  if (source !== "dashboard" && source !== "extension") {
+    throw new apiError(400, "invalid source!", "VALIDATION");
+  }
+
   if (!profile) {
     throw new apiError(404, "user profile not found!", "VALIDATION");
   }
@@ -34,14 +40,15 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
     throw new apiError(500, "Something went wrong!");
   }
   // save token in db
-  await userModel.findByIdAndUpdate(user._id, {
-    refreshToken,
-  });
+ await userModel.findByIdAndUpdate(
+    user._id,
+    { refreshToken: refreshToken }
+  );
   //   set cookies
   res.cookie("accessToken", accessToken, cookiesOptions);
   res.cookie("refreshToken", refreshToken, cookiesOptions);
   //? return redirect
-  return res.status(200).redirect(`${client_url}/dashboard`);
+  return res.status(302).redirect(`${client_url}/dashboard?source=${source}`);
 });
 
 // logout
@@ -54,8 +61,8 @@ const userLogout = asyncHandler(async (req, res) => {
     refreshToken: "",
   });
   //   clear cookies
-  res.clearCookie("accessToken", "", cookiesOptions);
-  res.clearCookie("refreshToken", "", cookiesOptions);
+  res.clearCookie("accessToken", cookiesOptions);
+  res.clearCookie("refreshToken", cookiesOptions);
   //? return res
   return res.status(200).json(new apiResponse(200, "user logout successful"));
 });
@@ -73,14 +80,13 @@ const currentLoginUser = asyncHandler(async (req, res) => {
     throw new apiError(404, "user not found!");
   }
   //? return res
-  return res
-    .status(200)
-    .json(
-      new apiResponse(200, "login user profile successful", {
-        user: loginUser,
-        accessToken: req.cookies?.accessToken || null,
-      })
-    );
+  return res.status(200).json(
+    new apiResponse(200, "login user profile successful", {
+      user: loginUser,
+      accessToken: req.cookies?.accessToken || null,
+      refreshToken: req.cookies?.refreshToken || null,
+    })
+  );
 });
 
 export { githubOauthLogin, userLogout, currentLoginUser };

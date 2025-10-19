@@ -1,20 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-const skillsSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    score: {
-      type: Number,
-      default: 0,
-      max: 100,
-    },
-  },
-  { _id: false }
-);
-
 const userSchema = new Schema(
   {
     name: {
