@@ -1,9 +1,8 @@
 import axios from "axios";
-import { storage } from "#imports";
+import { getLocalStorage } from "@/utils/extStorage";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API || "http://localhost:3000",
-  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,10 +10,9 @@ export const api = axios.create({
 
 // intercept req and attach token
 api.interceptors.request.use(async (config) => {
-  const token = await storage.getItem("sync:token");
+  const token = await getLocalStorage("token");
   if (token) {
-    console.info("✅sync Token is: ", token);
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token.accessToken}`;
   }
   return config;
 });
