@@ -26,8 +26,10 @@ export default defineConfig({
         "contextMenus",
         "tabs",
         "scripting",
+        'contentSettings',
         "storage",
       ],
+       host_permissions: ['http://localhost/*']
     };
   },
   vite: () => ({

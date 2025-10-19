@@ -1,4 +1,4 @@
-import { asyncHandler } from "@/entrypoints/utils/asyncHandler.js";
+import { asyncHandler } from "@/utils/asyncHandler.js";
 import { api } from "./base.js";
 
 const fetchAuthUser = async () => {  

@@ -8,10 +8,16 @@ export const authChecker = async () => {
     const res = await fetchAuthUser();
     if (res) {
       await storage.setItem("local:user", JSON.stringify(res?.data?.user));
-      await storage.setItem("sync:token", JSON.stringify(res?.data?.accessToken));
+      await storage.setItem(
+        "local:accessToken",
+        JSON.stringify(res?.data?.accessToken)
+      );
     } else {
       await storage.setItem("local:user", JSON.stringify(res?.data?.user));
-      await storage.setItem("sync:token", JSON.stringify(res?.data?.accessToken));
+      await storage.setItem(
+        "local:accessToken",
+        JSON.stringify(res?.data?.accessToken)
+      );
     }
   }
 };

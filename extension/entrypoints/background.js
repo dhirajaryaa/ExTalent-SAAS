@@ -2,14 +2,13 @@ import { authChecker } from "@/lib/authChecker";
 import { browser } from "#imports";
 
 export default defineBackground(() => {
-  // check auth user when browser is ready
-  browser.runtime.onStartup.addListener(() => {
-  console.log("🅴🆇🆃🅰🅻🅴🅽🆃 😎 Auth ruining from background");
-    authChecker();
+  console.log("🅴🆇🆃🅰🅻🅴🅽🆃 🚀 Background started");
+  browser.runtime.onStartup.addListener(async () => {
+    await authChecker();
   });
-  // show welcome page on extension install.
+  // show welcome page on extension install
   browser.runtime.onInstalled.addListener((details) => {
-    if (details.reason === "install" || details.reason === "update") {
+    if (["install", "update"].includes(details.reason)) {
       browser.tabs.create({ url: "welcome.html" });
     }
   });

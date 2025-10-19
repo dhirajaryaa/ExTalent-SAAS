@@ -40,10 +40,9 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
     throw new apiError(500, "Something went wrong!");
   }
   // save token in db
-  const loginUser = await userModel.findByIdAndUpdate(
+ await userModel.findByIdAndUpdate(
     user._id,
-    { refreshToken: refreshToken },
-    { new: true, select: "-githubId -githubToken -refreshToken -isDeleted -expireAt" }
+    { refreshToken: refreshToken }
   );
   //   set cookies
   res.cookie("accessToken", accessToken, cookiesOptions);
@@ -85,6 +84,7 @@ const currentLoginUser = asyncHandler(async (req, res) => {
     new apiResponse(200, "login user profile successful", {
       user: loginUser,
       accessToken: req.cookies?.accessToken || null,
+      refreshToken: req.cookies?.refreshToken || null,
     })
   );
 });
