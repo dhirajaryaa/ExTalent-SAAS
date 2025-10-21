@@ -7,14 +7,17 @@ export default defineBackground(() => {
     if (details.reason === "install") {
       browser.tabs.create({ url: "welcome.html" });
     }
-  });
 
-  // context menu add on install
-  browser.contextMenus.create({
+    // context menu add on install
+    browser.contextMenus.create({
     id: "extalent",
     title: "Scan Job with Extalent",
     contexts: ["page", "link", "selection"],
-    documentUrlPatterns: ["https://www.linkedin.com/jobs/collections/*"],
+    documentUrlPatterns: [
+      "https://www.linkedin.com/jobs/collections/*",
+      "https://www.linkedin.com/jobs/search/*"
+    ],
+  });
   });
 
   //! handle context menu click
