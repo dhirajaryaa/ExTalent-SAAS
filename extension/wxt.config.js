@@ -32,8 +32,7 @@ export default defineConfig({
        host_permissions: [
         "http://localhost/*",
         "https://localhost/*",
-        "https://dhirajarya.xyz/*",
-        "https://*.dhirajarya.xyz/*",
+        "https://www.linkedin.com/jobs/collections/recommended/*"
       ],
     };
   },

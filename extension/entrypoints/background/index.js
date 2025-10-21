@@ -1,4 +1,5 @@
 import { browser } from "#imports";
+import { createContextMenu } from "./contextMenu";
 
 export default defineBackground(() => {
   console.log("🅴🆇🆃🅰🅻🅴🅽🆃 🚀 Background started");
@@ -8,4 +9,6 @@ export default defineBackground(() => {
       browser.tabs.create({ url: "welcome.html" });
     }
   });
+
+  createContextMenu();
 });
