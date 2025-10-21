@@ -4,7 +4,7 @@ export default defineBackground(() => {
   console.log("🅴🆇🆃🅰🅻🅴🅽🆃 🚀 Background started");
   // show welcome page on extension install
   browser.runtime.onInstalled.addListener((details) => {
-    if (["install", "update"].includes(details.reason)) {
+    if (details.reason === "install") {
       browser.tabs.create({ url: "welcome.html" });
     }
   });
@@ -18,10 +18,16 @@ export default defineBackground(() => {
   });
 
   //! handle context menu click
-  browser.contextMenus.onClicked.addListener(async (info, tab) => {
-    console.log("Job scan process started");
+  browser.contextMenus.onClicked.addListener(async(info, tab) => {
     if (info.menuItemId === "extalent") {
-      browser.tabs.sendMessage(tab.id, { type: "SCAN_JOB_WITH_EXTALENT" });
+      await browser.tabs.sendMessage(
+        tab.id,
+        { action: "SCAN_JOB_WITH_EXTALENT" },
+        function (response) {
+          console.info("scan res:", response);
+        }
+      );
     }
   });
+  
 });
