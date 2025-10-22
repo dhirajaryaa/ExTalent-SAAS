@@ -25,8 +25,8 @@ export default defineBackground(() => {
     if (info.menuItemId === "extalent") {
       await browser.tabs.sendMessage(
         tab.id,
-        { action: "SCAN_JOB_WITH_EXTALENT" },
-        function (response) {
+        { action: "EXT_EXTRACT_JOB_INFO" },
+      async  function (response) {
           console.info("scan res:", response);
         }
       );
