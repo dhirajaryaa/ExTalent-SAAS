@@ -48,8 +48,8 @@ function App() {
 }
   return (
     <div className='my-3 font-sans'>
-     <JobScanBtn className={'max-w-xl mx-auto'} action={() => setLoading(!loading)} loading={loading}/>
-     <JobResult result={result}/>
+     <JobScanBtn  action={() => setLoading(!loading)} loading={loading}/>
+      {loading && <JobResult result={result}/>}
     </div>
   )
 }

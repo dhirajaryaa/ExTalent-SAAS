@@ -13,10 +13,9 @@ function JobScanBtn({
   loading = false,
   title = "Analyze Job Match",
   description = "Click below to scan the job description and instantly view your compatibility score, skill gaps, and improvement tips.",
-  className,
 }) {
   return (
-    <Item className={className}>
+    <Item className={'border-2 border-primary rounded-xl'}>
       <ItemContent>
         <ItemTitle>{title}</ItemTitle>
         <ItemDescription className={"text-xs"}>{description}</ItemDescription>
