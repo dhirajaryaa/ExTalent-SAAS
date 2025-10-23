@@ -16,10 +16,10 @@ function JobScanBtn({
   className,
 }) {
   return (
-    <Item variant="muted" className={className}>
+    <Item className={className}>
       <ItemContent>
         <ItemTitle>{title}</ItemTitle>
-        <ItemDescription className={'text-xs'}>{description}</ItemDescription>
+        <ItemDescription className={"text-xs"}>{description}</ItemDescription>
       </ItemContent>
       <ItemActions>
         <Button

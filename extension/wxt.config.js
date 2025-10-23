@@ -33,7 +33,6 @@ export default defineConfig({
         "http://localhost/*",
         "https://localhost/*",
         "https://www.linkedin.com/*",
-       "https://dhirajarya.xyz/*"
       ],
     };
   },

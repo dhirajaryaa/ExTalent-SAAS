@@ -7,7 +7,7 @@ import App from "./App";
 let uiRef = null;
 
 export default defineContentScript({
-  matches: ["https://www.linkedin.com/jobs/*","https://dhirajarya.xyz/*"],
+  matches: ["https://www.linkedin.com/jobs/*"],
   cssInjectionMode: "ui",
   runAt: "document_end",
   async main(ctx) {
@@ -81,8 +81,7 @@ async function mountShadowUI(ctx){
   return await createShadowRootUi(ctx, {
     name: "extalent-ui",
     position: "inline",
-    anchor: "#home",
-    // anchor: ".job-details-jobs-unified-top-card__container--two-pane",
+    anchor: ".job-details-jobs-unified-top-card__container--two-pane",
     append: "after",
     onMount: (uiContainer, shadow, shadowContainer) => {
       const app = document.createElement("div");

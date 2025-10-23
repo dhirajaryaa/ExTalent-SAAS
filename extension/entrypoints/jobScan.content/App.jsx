@@ -47,7 +47,7 @@ function App() {
   "__v": 0
 }
   return (
-    <div className='my-3 '>
+    <div className='my-3 font-sans'>
      <JobScanBtn className={'max-w-xl mx-auto'} action={() => setLoading(!loading)} loading={loading}/>
      <JobResult result={result}/>
     </div>
