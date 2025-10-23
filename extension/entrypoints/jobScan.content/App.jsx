@@ -1,10 +1,12 @@
 import '@/assets/index.css';
+import JobScanBtn from './components/JobScanBtn';
 
 function App() {
+  const [loading, setLoading] = useState(false)
   return (
-    <>
-      <h1>App</h1>
-    </>
+    <div className='p-4'>
+     <JobScanBtn className={'max-w-xl mx-auto'} action={() => setLoading(!loading)} loading={loading}/>
+    </div>
   )
 }
 
