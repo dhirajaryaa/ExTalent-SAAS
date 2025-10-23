@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getLocalStorage } from "@/utils/extStorage";
+import {
+  getLocalStorage,
+  getSyncStorage,
+  setSyncStorage,
+} from "@/utils/extStorage";
 import Logo from "@/components/custom/Logo";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,6 +18,8 @@ function App() {
   useEffect(() => {
     const getLocalUser = async () => {
       const user = await getLocalStorage("user");
+      const linkedinIngrateSetting = await getSyncStorage("ingrate");
+      !linkedinIngrateSetting && (await setSyncStorage("ingrate", true));
       if (user) {
         setUser(user);
       }
@@ -21,11 +27,23 @@ function App() {
     getLocalUser();
   }, []);
 
+  const toggleLinkedinIntegration = async () => {
+    const currentSetting = await getSyncStorage("ingrate");
+    if(linkedinIngrate){
+      await setSyncStorage("ingrate", !linkedinIngrate);
+      setLinkedinIngrate(!linkedinIngrate);
+    }else{
+       await setSyncStorage("ingrate", !linkedinIngrate);
+      setLinkedinIngrate(!linkedinIngrate);
+    }
+  };
+
   return (
     <div className=" bg-background text-background-foreground w-[350px]">
       <header className="w-full border-b-1 py-2 px-3">
         <Logo variant="sm" />
       </header>
+      {/* user avatar  */}
       <div className="relative mt-2 flex items-center justify-center flex-col gap-1">
         {/* logout btn  */}
         <Logout />
@@ -34,7 +52,7 @@ function App() {
           <AvatarImage
             src={user?.avatar}
             alt={user?.name}
-            className={"rounded-full"}
+            className={"rounded-full object-contain"}
           />
           <AvatarFallback>{user?.name?.split(" ")[0]}</AvatarFallback>
         </Avatar>
@@ -52,9 +70,7 @@ function App() {
           description=" Enable LinkedIn integration for interact with linkedin pages."
           label="linkedin-integrate"
           enabled={linkedinIngrate}
-          action={() => {
-            setLinkedinIngrate(!linkedinIngrate);
-          }}
+          action={toggleLinkedinIntegration}
         />
         {/* dark mode   */}
         <ListItem

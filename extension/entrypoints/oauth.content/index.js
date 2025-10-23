@@ -4,7 +4,7 @@ import { setLocalStorage } from "@/utils/extStorage";
 
 export default defineContentScript({
   matches: [`${import.meta.env.VITE_TOKEN_SYNC_DASHBOARD_URL}`],
-  run_at: "document_idle",
+  runAt: "document_end",
   async main() {
     // Listen for postMessage from dashboard
     window.addEventListener("message", async (event) => {

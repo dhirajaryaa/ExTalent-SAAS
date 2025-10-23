@@ -4,7 +4,7 @@ export default defineBackground(() => {
   console.log("🅴🆇🆃🅰🅻🅴🅽🆃 🚀 Background started");
   // show welcome page on extension install
   browser.runtime.onInstalled.addListener((details) => {
-    if (details.reason === "install") {
+    if (details.reason === "install" || details.reason === "update") {
       browser.tabs.create({ url: "welcome.html" });
     }
 
