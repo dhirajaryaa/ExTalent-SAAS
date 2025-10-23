@@ -19,7 +19,7 @@ function JobScanBtn({
     <Item variant="muted" className={className}>
       <ItemContent>
         <ItemTitle>{title}</ItemTitle>
-        <ItemDescription>{description}</ItemDescription>
+        <ItemDescription className={'text-xs'}>{description}</ItemDescription>
       </ItemContent>
       <ItemActions>
         <Button
