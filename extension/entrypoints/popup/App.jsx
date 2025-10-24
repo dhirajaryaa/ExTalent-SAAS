@@ -28,7 +28,6 @@ function App() {
   }, []);
 
   const toggleLinkedinIntegration = async () => {
-    const currentSetting = await getSyncStorage("ingrate");
     if(linkedinIngrate){
       await setSyncStorage("ingrate", !linkedinIngrate);
       setLinkedinIngrate(!linkedinIngrate);

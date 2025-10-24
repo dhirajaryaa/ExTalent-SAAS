@@ -10,27 +10,36 @@ export default defineBackground(() => {
 
     // context menu add on install
     browser.contextMenus.create({
-    id: "extalent",
-    title: "Scan Job with Extalent",
-    contexts: ["page", "link", "selection"],
-    documentUrlPatterns: [
-      "https://www.linkedin.com/jobs/collections/*",
-      "https://www.linkedin.com/jobs/search/*"
-    ],
-  });
+      id: "extalent",
+      title: "Scan Job with Extalent",
+      contexts: ["page", "link", "selection"],
+      documentUrlPatterns: [
+        "https://www.linkedin.com/jobs/collections/*",
+        "https://www.linkedin.com/jobs/search/*",
+      ],
+    });
   });
 
   //! handle context menu click
-  browser.contextMenus.onClicked.addListener(async(info, tab) => {
+  browser.contextMenus.onClicked.addListener(async (info, tab) => {
     if (info.menuItemId === "extalent") {
       await browser.tabs.sendMessage(
         tab.id,
         { action: "EXT_EXTRACT_JOB_INFO" },
-      async  function (response) {
+        async function (response) {
           console.info("scan res:", response);
         }
       );
     }
   });
-  
+
+  //! handle job scan api call
+  browser.runtime.onMessage.addListener(
+    async (message, sender, sendResponse) => {
+      if (message.action === "SCAN_JOB_WITH_EXTALENT") {
+        console.log(message.payload);
+       await sendResponse(true);
+      }
+    }
+  );
 });

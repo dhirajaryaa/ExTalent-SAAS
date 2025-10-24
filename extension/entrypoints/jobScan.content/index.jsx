@@ -3,6 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "../../assets/index.css";
 import App from "./App";
+import { getSyncStorage } from "@/utils/extStorage";
+import { extractJobInfo } from "@/utils/extreactJobInfo";
 
 let uiRef = null;
 
@@ -15,69 +17,28 @@ export default defineContentScript({
     await browser.runtime.onMessage.addListener(
       async (message, sender, sendResponse) => {
         if (message.action === "EXT_EXTRACT_JOB_INFO") {
-          // select job information
-          const jobId = new URLSearchParams(window.location.search).get(
-            "currentJobId"
+          const jobInfo = await extractJobInfo(document, window);
+          console.log(jobInfo);
+
+          await browser.runtime.sendMessage(
+            { action: "SCAN_JOB_WITH_EXTALENT", payload: jobInfo },
+            async (response) => {
+              console.log("Received response from background:", response);
+            }
           );
-          const jobInfo = document.querySelector(
-            "div.job-details-jobs-unified-top-card__job-title h1"
-          );
-          const jobTitle = jobInfo?.innerText;
-          const jobUrl = jobInfo?.querySelector("a")?.href;
-          const jobCompany = document
-            .querySelector(
-              "div.jobs-company__box a[data-view-name='job-details-about-company-name-link']"
-            )
-            ?.innerText.trim();
-          const companyLogo = document.querySelector(
-            "div.jobs-company__box img[alt*='company logo']"
-          )?.src;
-
-          const jobDescription = document
-            .querySelector("div#job-details p")
-            ?.innerText.replace(/\n/g, "")
-            .trim();
-
-          //* check data selected or not
-          if (
-            jobId === undefined ||
-            jobCompany === undefined ||
-            jobTitle === undefined ||
-            jobDescription === undefined ||
-            jobUrl === undefined ||
-            companyLogo === undefined
-          ) {
-            alert("Job Content Not Available! try again 🔃");
-          }
-          console.log("jobId", jobId);
-          console.log("job title", jobTitle);
-          console.log("job url", jobUrl);
-          console.log("job company", jobCompany);
-          console.log("company logo", companyLogo);
-          console.log("job description", jobDescription);
-
-          await sendResponse({
-            action: "EXT_JOB_SCAN",
-            data: {
-              jobId,
-              jobTitle,
-              jobUrl,
-              jobCompany,
-              companyLogo,
-              jobDescription,
-            },
-          });
+          await sendResponse(true);
         }
       }
     );
 
-    // Inject UI on job page
-    uiRef = await mountShadowUI(ctx);
-    uiRef.mount();
+    // Inject UI on job page when ingrate is true
+    const ingrate = await getSyncStorage("ingrate");
+    uiRef = ingrate && (await mountShadowUI(ctx));
+    ingrate && uiRef.mount();
   },
 });
 
-async function mountShadowUI(ctx){
+async function mountShadowUI(ctx) {
   return await createShadowRootUi(ctx, {
     name: "extalent-ui",
     position: "inline",
@@ -98,4 +59,4 @@ async function mountShadowUI(ctx){
       root?.unmount();
     },
   });
-};
+}
