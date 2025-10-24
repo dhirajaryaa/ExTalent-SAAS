@@ -6,6 +6,16 @@ export default defineContentScript({
   matches: [`${import.meta.env.VITE_TOKEN_SYNC_DASHBOARD_URL}`],
   runAt: "document_end",
   async main() {
+    // check token 
+    const token = localStorage.getItem("token");
+    if(token){
+       // set token on storage
+        await setLocalStorage("token", {
+          accessToken: token,
+          refreshToken: null,
+          syncedAt: new Date().toISOString(),
+        });
+    }
     // Listen for postMessage from dashboard
     window.addEventListener("message", async (event) => {
       if (event.origin !== window.location.origin) return;
