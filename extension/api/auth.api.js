@@ -1,12 +1,12 @@
 import { asyncHandler } from "@/utils/asyncHandler.js";
 import { api } from "./base.js";
 
-const fetchAuthUser = async () => {  
+const fetchAuthUser = async () => {
   const res = await asyncHandler(api.get("/auth/me"), "fetchAuthUser");
   if (res.success) {
     return res.data.data;
   }
-  return null;
+  return res.error;
 };
 
 const logoutAuthUser = async () => {
@@ -14,7 +14,7 @@ const logoutAuthUser = async () => {
   if (res.success) {
     return res.data.data;
   }
-  return null;
+  return res.error;
 };
 
 export { fetchAuthUser, logoutAuthUser };

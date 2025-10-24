@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ListItem from "./components/ListItem";
 import Logout from "./components/Logout";
 import { ExternalLink, UserCircle, Github } from "lucide-react";
+import { browser } from "#imports";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -29,6 +30,11 @@ function App() {
   useEffect(() => {
     const getLocalUser = async () => {
       const user = await getLocalStorage("user");
+      const token = await getLocalStorage("token");
+      token &&
+        browser.runtime
+          .sendMessage({ action: "GET_USER_INFO" })
+          .then((res) => setUser(res?.data?.user));
       if (user) {
         setUser(user);
       }

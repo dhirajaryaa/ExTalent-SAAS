@@ -6,15 +6,19 @@ export default defineContentScript({
   matches: [`${import.meta.env.VITE_TOKEN_SYNC_DASHBOARD_URL}`],
   runAt: "document_end",
   async main() {
-    // check token 
+    // check token
     const token = localStorage.getItem("token");
-    if(token){
-       // set token on storage
-        await setLocalStorage("token", {
-          accessToken: token,
-          refreshToken: null,
-          syncedAt: new Date().toISOString(),
-        });
+    if (token) {
+      // set token on storage
+      await setLocalStorage("token", {
+        accessToken: token,
+        refreshToken: null,
+        syncedAt: new Date().toISOString(),
+      });
+      // get user info
+      const user = await fetchAuthUser();
+      // set user info on storage
+      await setLocalStorage("user", user?.data?.user);
     }
     // Listen for postMessage from dashboard
     window.addEventListener("message", async (event) => {
@@ -29,7 +33,7 @@ export default defineContentScript({
           syncedAt: new Date().toISOString(),
         });
 
-        // get user info 
+        // get user info
         const user = await fetchAuthUser();
 
         // set user info on storage

@@ -1,6 +1,26 @@
 import { browser } from "#imports";
+import { fetchAuthUser } from "@/api/auth.api";
 import { scanNewJob } from "@/api/job.api";
 import { setSyncStorage } from "@/utils/extStorage";
+
+// fetch User info
+async function getUser() {
+  try {
+    const user = await fetchAuthUser();
+    return user;
+  } catch (error) {
+    return error;
+  }
+}
+//job scan
+async function jobScan() {
+  try {
+    const job = await scanNewJob();
+    return job;
+  } catch (error) {
+    return error;
+  }
+}
 
 export default defineBackground(() => {
   console.log("🅴🆇🆃🅰🅻🅴🅽🆃 🚀 Background started");
@@ -33,13 +53,16 @@ export default defineBackground(() => {
     }
   });
 
-  //! handle job scan api call
+  //! handle scan api call
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    (async () => {
-      if (message.action === "SCAN_JOB_WITH_EXTALENT") {}
-          const res = await scanNewJob(message.payload);
-          sendResponse(res);          
-    })();
-    return true;
+    if (message.action === "GET_USER_INFO") {
+      const user = getUser();
+      sendResponse(user);
+      return true;
+    } else if (message.action === "SCAN_JOB_WITH_EXTALENT") {
+      const job = jobScan();
+      sendResponse(job);
+      return true;
+    }
   });
 });
