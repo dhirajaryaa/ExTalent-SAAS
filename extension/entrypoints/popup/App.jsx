@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { getLocalStorage, setSyncStorage } from "@/utils/extStorage";
+import {
+  getLocalStorage,
+  getSyncStorage,
+  setSyncStorage,
+} from "@/utils/extStorage";
 import Logo from "@/components/custom/Logo";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ListItem from "./components/ListItem";
 import Logout from "./components/Logout";
-import { ExternalLink, UserCircle,Github } from "lucide-react";
+import { ExternalLink, UserCircle, Github } from "lucide-react";
 
 function App() {
   const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [linkedinIngrate, setLinkedinIngrate] = useState(true);
+
+  //check linkedin integration
+  useEffect(() => {
+    const getLinkedinIngrate = async () => {
+      const ingrate = await getSyncStorage("ingrate");
+      ingrate ? setLinkedinIngrate(true) : setLinkedinIngrate(false);
+    };
+    getLinkedinIngrate();
+  }, []);
+
+  // check user
   useEffect(() => {
     const getLocalUser = async () => {
       const user = await getLocalStorage("user");
@@ -20,7 +35,7 @@ function App() {
     };
     getLocalUser();
   }, []);
-
+  // toggle linkedin integration
   const toggleLinkedinIntegration = async () => {
     if (linkedinIngrate) {
       await setSyncStorage("ingrate", !linkedinIngrate);
@@ -30,7 +45,7 @@ function App() {
       setLinkedinIngrate(!linkedinIngrate);
     }
   };
-
+  // sign with github
   async function signInWithGithub() {
     const oauthLink = `${
       import.meta.env.VITE_GITHUB_LOGIN_URL
@@ -74,16 +89,6 @@ function App() {
               label="linkedin-integrate"
               enabled={linkedinIngrate}
               action={toggleLinkedinIntegration}
-            />
-            {/* dark mode   */}
-            <ListItem
-              title="Dark Mode"
-              description="toggle between dark and light mode theme"
-              label="dark-mode"
-              enabled={darkMode}
-              action={() => {
-                setDarkMode(!darkMode);
-              }}
             />
             <div className="space-y-2 w-full mt-3">
               <Button className={"w-full"} asChild>
