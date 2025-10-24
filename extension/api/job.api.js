@@ -6,5 +6,5 @@ export const scanNewJob = async (data) => {
   if (res.success) {
     return res.data?.data;
   }
-  return null;
+  return res.error;
 };

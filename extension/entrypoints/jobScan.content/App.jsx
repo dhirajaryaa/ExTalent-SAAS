@@ -3,9 +3,8 @@ import JobScanBtn from "./components/JobScanBtn";
 import JobResult from "./components/JobResult";
 import { browser } from "#imports";
 import { extractJobInfo } from "@/utils/extreactJobInfo";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import Loading from "./components/Loading";
+import Status from "./components/Status";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -19,13 +18,11 @@ function App() {
       action: "SCAN_JOB_WITH_EXTALENT",
       payload: jobInfo,
     });
-    console.log(res);
-    
-    if (res.isSuccess) {      
+    if (res.isSuccess) {
       setResult(res.data);
       setLoading(false);
     } else {
-      setError(res.error);
+      setError(res.message);
       setLoading(false);
     }
   }
@@ -33,9 +30,9 @@ function App() {
   return (
     <div className="my-3 font-sans">
       <JobScanBtn action={handleScanJob} />
-      {loading && <Loading />}
+      {loading && <Status loading={loading} />}
+      {error && <Status error={error} />}
       {result && <JobResult result={result} />}
-      {error && <p className="text-destructive">{error}</p>}
     </div>
   );
 }
