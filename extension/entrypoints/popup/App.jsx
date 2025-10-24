@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   getLocalStorage,
   getSyncStorage,
+  setLocalStorage,
   setSyncStorage,
 } from "@/utils/extStorage";
 import Logo from "@/components/custom/Logo";
@@ -17,29 +18,25 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [linkedinIngrate, setLinkedinIngrate] = useState(true);
 
-  //check linkedin integration
-  useEffect(() => {
-    const getLinkedinIngrate = async () => {
-      const ingrate = await getSyncStorage("ingrate");
-      ingrate ? setLinkedinIngrate(true) : setLinkedinIngrate(false);
-    };
-    getLinkedinIngrate();
-  }, []);
-
   // check user
   useEffect(() => {
-    const getLocalUser = async () => {
-      const user = await getLocalStorage("user");
-      const token = await getLocalStorage("token");
-      token &&
-        browser.runtime
-          .sendMessage({ action: "GET_USER_INFO" })
-          .then((res) => setUser(res?.data?.user));
-      if (user) {
-        setUser(user);
+    const checkLocalUser = async () => {
+      // check linkedin integration
+      const ingrate = await getSyncStorage("ingrate");
+      setLinkedinIngrate(!!ingrate);
+      // get user
+      const localUser = await getLocalStorage("user");
+      const localToken = await getLocalStorage("token");
+      if (localUser) {
+        setUser(localUser);
+      } else {
+        browser.runtime.sendMessage({ action: "GET_USER_INFO" }).then((res) => {
+          setUser(res?.data?.user);
+          setLocalStorage("user", res?.data?.user);
+        });
       }
     };
-    getLocalUser();
+    checkLocalUser();
   }, []);
   // toggle linkedin integration
   const toggleLinkedinIntegration = async () => {

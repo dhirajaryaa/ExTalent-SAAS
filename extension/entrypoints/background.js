@@ -6,7 +6,7 @@ import { setSyncStorage } from "@/utils/extStorage";
 // fetch User info
 async function getUser() {
   try {
-    const user = await fetchAuthUser();
+    const user = await fetchAuthUser();    
     return user;
   } catch (error) {
     return error;
@@ -54,15 +54,18 @@ export default defineBackground(() => {
   });
 
   //! handle scan api call
-  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === "GET_USER_INFO") {
-      const user = getUser();
-      sendResponse(user);
-      return true;
-    } else if (message.action === "SCAN_JOB_WITH_EXTALENT") {
-      const job = jobScan();
-      sendResponse(job);
-      return true;
-    }
-  });
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+  if (message.action === "GET_USER_INFO") {
+    getUser().then(user => sendResponse(user));
+    return true;
+  }
+
+  if (message.action === "SCAN_JOB_WITH_EXTALENT") {
+    jobScan().then(job => sendResponse(job));
+    return true;
+  }
+
+});
+
 });
