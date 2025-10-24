@@ -1,9 +1,13 @@
 import { browser } from "#imports";
+import { scanNewJob } from "@/api/job.api";
+import { setSyncStorage } from "@/utils/extStorage";
 
 export default defineBackground(() => {
   console.log("🅴🆇🆃🅰🅻🅴🅽🆃 🚀 Background started");
   // show welcome page on extension install
   browser.runtime.onInstalled.addListener((details) => {
+    // set linkedin integration on  
+    setSyncStorage("ingrate", true);
     if (details.reason === "install" || details.reason === "update") {
       browser.tabs.create({ url: "welcome.html" });
     }
@@ -31,11 +35,14 @@ export default defineBackground(() => {
   });
 
   //! handle job scan api call
-  browser.runtime.onMessage.addListener(
-    async (message, sender, sendResponse) => {
-      if (message.action === "SCAN_JOB_WITH_EXTALENT") {
-        console.log(message.payload);
-      }
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  (async () => {
+    if (message.action === "SCAN_JOB_WITH_EXTALENT") {
+      console.log("Payload:", message.payload);
+      const res = await scanNewJob(message.payload);
+      sendResponse(res);
     }
-  );
+  })();
+  return true;
+});
 });

@@ -7,8 +7,6 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { Search, Loader2 } from "lucide-react";
-import { browser } from "#imports";
-import { extractJobInfo } from "@/utils/extreactJobInfo";
 
 function JobScanBtn({
   action,
@@ -16,13 +14,7 @@ function JobScanBtn({
   title = "Analyze Job Match",
   description = "Click below to scan the job description and instantly view your compatibility score, skill gaps, and improvement tips.",
 }) {
-  async function handleScanJob() {
-    const jobInfo = await extractJobInfo(document, window);
-    await browser.runtime.sendMessage({
-      action: "SCAN_JOB_WITH_EXTALENT",
-      payload: jobInfo,
-    });
-  }
+
 
   return (
     <Item className={"border-2 border-primary rounded-xl"}>
@@ -33,7 +25,7 @@ function JobScanBtn({
       <ItemActions>
         <Button
           size="sm"
-          onClick={handleScanJob}
+          onClick={action}
           disabled={Boolean(loading)}
           aria-label={loading ? "Analyzing job match" : "Analyze job match"}
         >

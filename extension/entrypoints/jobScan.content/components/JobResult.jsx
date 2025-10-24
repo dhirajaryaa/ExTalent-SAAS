@@ -6,6 +6,8 @@ import { BookmarkIcon, ExternalLink } from "lucide-react";
 import logo from "@/assets/logo_sm.png";
 
 function JobResult({ result }) {
+  console.log(result);
+  
   return (
     <div className="space-y-2 rounded-xl p-2 mt-4 shadow-lg">
       <div className="flex items-center justify-between gap-5 px-4 py-1 flex-col sm:flex-row">
