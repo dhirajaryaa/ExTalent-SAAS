@@ -22,7 +22,7 @@ function App() {
       setResult(res.data);
       setLoading(false);
     } else {
-      setError(res.message);
+      setError(res ? res.message || res.error : "Something went wrong");
       setLoading(false);
     }
   }

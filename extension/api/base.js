@@ -11,8 +11,9 @@ export const api = axios.create({
 // intercept req and attach token
 api.interceptors.request.use(async (config) => {
   const token = await getLocalStorage("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token.accessToken}`;
+  if (!token) {
+    throw new Error("User not authenticated. Please authenticate first.");
   }
+  config.headers.Authorization = `bearer ${token.accessToken}`;
   return config;
 });
