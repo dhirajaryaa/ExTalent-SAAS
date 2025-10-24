@@ -34,12 +34,12 @@ export default defineContentScript({
         });
 
         // get user info
-        const user = await fetchAuthUser();
-
+        const res = await fetchAuthUser();
+        const user = res?.data?.user;
         // set user info on storage
-        await setLocalStorage("user", user?.data?.user);
+        await setLocalStorage("user", user);
 
-        setTimeout(() => window.close(), 4000);
+        !user?.isOnboarding && setTimeout(() => window.close(), 4000);
       }
     });
 
