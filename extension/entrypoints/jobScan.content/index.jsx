@@ -18,15 +18,9 @@ export default defineContentScript({
       async (message, sender, sendResponse) => {
         if (message.action === "EXT_EXTRACT_JOB_INFO") {
           const jobInfo = await extractJobInfo(document, window);
-          console.log(jobInfo);
-
           await browser.runtime.sendMessage(
-            { action: "SCAN_JOB_WITH_EXTALENT", payload: jobInfo },
-            async (response) => {
-              console.log("Received response from background:", response);
-            }
+            { action: "SCAN_JOB_WITH_EXTALENT", payload: jobInfo }
           );
-          await sendResponse(true);
         }
       }
     );

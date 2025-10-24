@@ -25,10 +25,7 @@ export default defineBackground(() => {
     if (info.menuItemId === "extalent") {
       await browser.tabs.sendMessage(
         tab.id,
-        { action: "EXT_EXTRACT_JOB_INFO" },
-        async function (response) {
-          console.info("scan res:", response);
-        }
+        { action: "EXT_EXTRACT_JOB_INFO" }
       );
     }
   });
@@ -38,7 +35,6 @@ export default defineBackground(() => {
     async (message, sender, sendResponse) => {
       if (message.action === "SCAN_JOB_WITH_EXTALENT") {
         console.log(message.payload);
-       await sendResponse(true);
       }
     }
   );
