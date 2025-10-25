@@ -38,11 +38,17 @@ const userSkillsUpdateAPI = async(data)=>{
   return res.data;
 }
 
+const userProfileDeleteAPI = async () => {
+  const res = await api.delete("/users/profile");
+  return res.data;
+}
+
 export {
   userResumeUploadAPI,
   userOnboardingAPI,
   userProfileAPI,
   userResumeEvaluationAPI,
   userProfileUpdateAPI,
-  userSkillsUpdateAPI
+  userSkillsUpdateAPI,
+  userProfileDeleteAPI
 };

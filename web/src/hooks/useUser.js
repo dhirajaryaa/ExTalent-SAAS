@@ -1,6 +1,7 @@
 import {
   userOnboardingAPI,
   userProfileAPI,
+  userProfileDeleteAPI,
   userProfileUpdateAPI,
   userResumeEvaluationAPI,
   userResumeUploadAPI,
@@ -37,6 +38,9 @@ const useUser = (enable = true) => {
     mutationFn: userResumeEvaluationAPI,
     mutationKey: ["userResumeEvaluation"],
   });
+  const userProfileDelete = useMutation({
+    mutationFn: userProfileDeleteAPI
+  });
   return {
     userResumeUpload,
     userOnboarding,
@@ -44,6 +48,7 @@ const useUser = (enable = true) => {
     userResumeEvaluation,
     userProfileUpdate,
     userSkillsUpdate,
+    userProfileDelete
   };
 };
 
