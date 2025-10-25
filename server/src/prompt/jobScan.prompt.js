@@ -27,7 +27,7 @@ Return structured data with the following fields:
     "skillsScore": 0
   },
   "recommendations": [
-    ""                        // list of suggestions or insights about key skills or requirements
+    ""                        // always provide a list of suggestions or insights about key skills or requirements
   ],
   title : "",            // job title or job post
 }
