@@ -7,6 +7,17 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Card,
   CardAction,
   CardContent,
@@ -17,14 +28,29 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useJob } from "@/hooks/useJob";
+import { Trash2 } from "lucide-react";
 import { Bookmark, ExternalLink } from "lucide-react";
 import { useParams } from "react-router";
+import { setJobs } from "@/store/store";
+import { useNavigate } from "react-router";
 
 function JobDetails() {
   const { jobId } = useParams();
   const {
     getJobWithId: { isLoading, data },
+    deleteJobWithId : {isPending,mutateAsync},
+    getAllJobs: {data: jobs,refetch}
   } = useJob(true, { jobId });
+  const navigate = useNavigate();
+
+  const handleJobReportDelete = async()=>{
+    await mutateAsync();
+    const res = await refetch();
+    if(res){
+      setJobs(res?.data?.data);
+      navigate("/job-match");
+    }
+  }
 
   if (isLoading) return <Loading />;
 
@@ -45,28 +71,30 @@ function JobDetails() {
             className="size-14 sm:size-20 rounded-lg col-start-1 row-start-1"
           />
           <div>
-            <CardTitle className={"text-lg sm:text-xl"}>{job?.title} </CardTitle>
+            <CardTitle className={"text-lg sm:text-xl"}>
+              {job?.title}{" "}
+            </CardTitle>
             <CardDescription className={"flex items-center gap-2"}>
               {job?.companyName}
             </CardDescription>
             <div className="flex gap-2 items-center mt-2">
-            <Button asChild size="sm">
-              <a href={job?.url} target="_blank" rel="noopener noreferrer">
-                <ExternalLink />
-                View Posting
-              </a>
-            </Button>
-            <Button size="sm" variant={"outline"}>
-              <Bookmark />
-              Save Job
-            </Button>
-             <Badge
-              size="sm"
-              className={'ml-auto'}
-              variant={job?.readyToApply ? "default" : "destructive"}
-            >
-              {job?.readyToApply ? "Applicable" : "Not Applicable"}
-            </Badge>
+              <Button asChild size="sm">
+                <a href={job?.url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink />
+                  View Posting
+                </a>
+              </Button>
+              <Button size="sm" variant={"outline"}>
+                <Bookmark />
+                Save Job
+              </Button>
+              <Badge
+                size="sm"
+                className={"ml-auto"}
+                variant={job?.readyToApply ? "default" : "destructive"}
+              >
+                {job?.readyToApply ? "Applicable" : "Not Applicable"}
+              </Badge>
             </div>
           </div>
         </CardHeader>
@@ -80,15 +108,39 @@ function JobDetails() {
             matchSkills={job?.matchSkills}
           />
           {/* job summary  */}
-          <div className="space-y-2">
+          <div className="space-y-2 mt-4">
             <h3 className="text-base font-semibold">Job Summary</h3>
             <p className="text-muted-foreground text-[15px]">
               {job?.scanSummary}
             </p>
           </div>
-        </CardContent>
-        <CardFooter>
           <Recommendation recommendations={job.recommendations} />
+        </CardContent>
+        <CardFooter className="flex items-center justify-end gap-2">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={"destructive"}>
+                <Trash2 /> Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  this job scan report form server.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction asChild>
+                  <Button variant={"destructive"} onClick={handleJobReportDelete}>
+                    {isPending ? "Deleting..." : "Delete"}
+                  </Button>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </CardFooter>
       </Card>
     </section>

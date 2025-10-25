@@ -1,5 +1,5 @@
-import { getJobAPI, getJobsAPI } from "@/api/job.api";
-import { useQuery } from "@tanstack/react-query";
+import { deleteJobAPI, getJobAPI, getJobsAPI } from "@/api/job.api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useJob = (enable, { query, jobId }) => {
   const getAllJobs = useQuery({
@@ -14,5 +14,10 @@ export const useJob = (enable, { query, jobId }) => {
     enabled: jobId && enable,
   });
 
-  return { getAllJobs, getJobWithId };
+  const deleteJobWithId = useMutation({
+    mutationFn: () => deleteJobAPI(jobId),
+    enabled: jobId && enable,
+  });
+
+  return { getAllJobs, getJobWithId ,deleteJobWithId};
 };

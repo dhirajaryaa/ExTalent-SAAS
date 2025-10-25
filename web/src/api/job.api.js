@@ -11,5 +11,11 @@ const getJobAPI = async (id) => {
   const res = await api.get(`/jobs/${id}`)  
   return res.data ;
 };
+//delete job with id
+const deleteJobAPI = async (id) => {
+  if (!id) return null;
+  const res = await api.delete(`/jobs/${id}`)  
+  return res.data ;
+};
 
-export { getJobAPI, getJobsAPI };
+export { getJobAPI, getJobsAPI , deleteJobAPI};
