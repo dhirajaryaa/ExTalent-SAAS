@@ -54,6 +54,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
     },
   },
 ]);
+ if(user?.isDeleted){
+   throw new apiError(404, "user not found!");
+ }
 
   if (!user) {
     throw new apiError(404, "user not found!");
@@ -168,6 +171,7 @@ const deleteUserAccount = asyncHandler(async (req, res) => {
   // set ttl for user delete
   await userModel.findByIdAndUpdate(req.user._id, {
     expireAt,
+    isDeleted: true
   });
   //? return res
   return res.status(200).json(new apiResponse(200, "profile deleted! after 30 days.", null));

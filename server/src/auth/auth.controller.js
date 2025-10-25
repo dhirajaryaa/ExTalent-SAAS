@@ -19,6 +19,9 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
   }
   // find user
   let user = await userModel.findOne({ githubId: profile?.node_id });
+  if (user?.isDeleted) {
+    return res.status(303).redirect(`${client_url}/login`);
+  }
   if (!user) {
     // create new user
     user = await userModel.create({
@@ -40,10 +43,7 @@ const githubOauthLogin = asyncHandler(async (req, res) => {
     throw new apiError(500, "Something went wrong!");
   }
   // save token in db
- await userModel.findByIdAndUpdate(
-    user._id,
-    { refreshToken: refreshToken }
-  );
+  await userModel.findByIdAndUpdate(user._id, { refreshToken: refreshToken });
   //   set cookies
   res.cookie("accessToken", accessToken, cookiesOptions);
   res.cookie("refreshToken", refreshToken, cookiesOptions);
