@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { jobScanSchema } from "@/schema/job.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { ScanIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -12,7 +14,10 @@ function JobScan() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(jobScanSchema),
+  });
 
   const handleJobScan = async () => {};
 
@@ -34,7 +39,13 @@ function JobScan() {
               className="w-full h-32"
               id="jobDescription"
               placeholder="Enter job description here"
+              aria-invalid={errors.jobDescription ? "true" : "false"}
             />
+            {errors.jobDescription && (
+              <p className="text-destructive text-xs mt-1">
+                {errors.jobDescription.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="companyName">Company Name</Label>
@@ -42,7 +53,13 @@ function JobScan() {
               id="companyName"
               placeholder="Enter company name here"
               {...register("companyName")}
+              aria-invalid={errors.companyName ? "true" : "false"}
             />
+            {errors.companyName && (
+              <p className="text-destructive text-xs mt-1">
+                {errors.companyName.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="logo">Company Logo URL</Label>
@@ -50,7 +67,13 @@ function JobScan() {
               id="logo"
               placeholder="Enter company logo url here"
               {...register("logo")}
+              aria-invalid={errors.logo ? "true" : "false"}
             />
+            {errors.logo && (
+              <p className="text-destructive text-xs mt-1">
+                {errors.logo.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2 col-span-2">
             <Label htmlFor="url">Job Post URL</Label>
@@ -58,7 +81,13 @@ function JobScan() {
               id="url"
               placeholder="Enter job post url here"
               {...register("url")}
+              aria-invalid={errors.url ? "true" : "false"}
             />
+            {errors.url && (
+              <p className="text-destructive text-xs mt-1">
+                {errors.url.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2 col-span-2">
             <Button type="submit" className={"w-full"}>
