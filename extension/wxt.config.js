@@ -4,8 +4,8 @@ import path from "path";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  // change default dev server port 
-    dev: {
+  // change default dev server port
+  dev: {
     server: {
       port: 4000,
     },
@@ -26,10 +26,14 @@ export default defineConfig({
         "contextMenus",
         "tabs",
         "scripting",
-        'contentSettings',
+        "contentSettings",
         "storage",
       ],
-       host_permissions: ['http://localhost/*']
+      host_permissions: [
+        "http://localhost/*",
+        "https://localhost/*",
+        "https://www.linkedin.com/*",
+      ],
     };
   },
   vite: () => ({
