@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useJob } from "@/hooks/useJob";
 import { jobScanSchema } from "@/schema/job.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -19,7 +20,16 @@ function JobScan() {
     resolver: zodResolver(jobScanSchema),
   });
 
-  const handleJobScan = async () => {};
+  const {
+    newJobScan: { isPending, mutateAsync },
+  } = useJob(false);
+
+  const handleJobScan = async (data) => {
+    const res = await mutateAsync({ ...data, jobId: String(Date.now()) });
+    if (res) {
+      reset();
+    }
+  };
 
   return (
     <section className="h-full w-full p-3  max-w-3xl mx-auto">
@@ -33,10 +43,10 @@ function JobScan() {
       <form onSubmit={handleSubmit(handleJobScan)} className="w-full">
         <div className="grid  grid-cols-1 sm:grid-cols-2 mt-8 w-full gap-4">
           <div className="space-y-2 col-span-2">
-            <Label htmlFor="jobDescription">Job Description</Label>
+            <Label className={'sm:text-[15px]'} htmlFor="jobDescription">Job Description</Label>
             <Textarea
               {...register("jobDescription")}
-              className="w-full h-32"
+              className="w-full h-32 text-sm"
               id="jobDescription"
               placeholder="Enter job description here"
               aria-invalid={errors.jobDescription ? "true" : "false"}
@@ -47,9 +57,10 @@ function JobScan() {
               </p>
             )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="companyName">Company Name</Label>
+          <div className="space-y-2 col-span-2 sm:col-span-1">
+            <Label className={'sm:text-[15px]'} htmlFor="companyName">Company Name</Label>
             <Input
+            className={'text-sm'}
               id="companyName"
               placeholder="Enter company name here"
               {...register("companyName")}
@@ -61,9 +72,10 @@ function JobScan() {
               </p>
             )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="logo">Company Logo URL</Label>
+          <div className="space-y-2 col-span-2 sm:col-span-1">
+            <Label className={'sm:text-[15px]'} htmlFor="logo">Company Logo URL</Label>
             <Input
+            className={'text-sm'}
               id="logo"
               placeholder="Enter company logo url here"
               {...register("logo")}
@@ -76,8 +88,9 @@ function JobScan() {
             )}
           </div>
           <div className="space-y-2 col-span-2">
-            <Label htmlFor="url">Job Post URL</Label>
+            <Label className={'sm:text-[15px]'} htmlFor="url">Job Post URL</Label>
             <Input
+            className={'text-sm'}
               id="url"
               placeholder="Enter job post url here"
               {...register("url")}
@@ -91,7 +104,7 @@ function JobScan() {
           </div>
           <div className="space-y-2 col-span-2">
             <Button type="submit" className={"w-full"}>
-              {true ? (
+              {isPending ? (
                 <>
                   <Loader2 className="animate-spin size-6" /> Scanning...
                 </>
