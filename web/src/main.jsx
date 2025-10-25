@@ -9,6 +9,7 @@ import {
   Home,
   JobDetails,
   JobMatch,
+  JobScan,
   LoginPage,
   NotFound,
   Onboarding,
@@ -46,6 +47,10 @@ const appRouter = createBrowserRouter([
       {
         path: "profile", //* user profile page
         element: <UserProfile />,
+      },
+      {
+        path: "job-scan", //* job scan page
+        element: <JobScan />,
       },
       {
         path: "job-match", //* job match page
