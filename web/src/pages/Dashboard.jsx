@@ -31,7 +31,7 @@ function Dashboard() {
         <ReportCard
           title={"This week Job scan"}
           description={"last 7 days total job scan"}
-          value={8}
+          value={data?.data?.totalScannedThisWeek}
         />
       </div>
       <div className="mt-4">

@@ -80,6 +80,7 @@ const getJobs = asyncHandler(async (req, res) => {
     },
   ]);
   const totalJobs = await jobModal.aggregate([
+    {$match: { userId: req.user._id }},
     {
       $group: {
         // total jobs and saved jobs count
@@ -90,6 +91,11 @@ const getJobs = asyncHandler(async (req, res) => {
             $cond: [{ $eq: ["$savedJob", true] }, 1, 0],
           },
         },
+        totalScannedThisWeek :{
+          $sum: {
+            $cond: [{ $gte: ["$createdAt", new Date(new Date().setDate(new Date().getDate() - 7))] }, 1, 0],
+          },
+        }
       },
     },
     {
@@ -97,6 +103,7 @@ const getJobs = asyncHandler(async (req, res) => {
         _id: 0, // remove _id
         totalDocs: 1,
         totalSavedJobs: 1,
+        totalScannedThisWeek: 1
       },
     },
   ]);
@@ -108,6 +115,7 @@ const getJobs = asyncHandler(async (req, res) => {
     new apiResponse(200, "all job by user fetched successfully", {
       totalJobs: totalJobs[0]?.totalDocs || 0,
       totalSavedJobs: totalJobs[0]?.total || 0,
+      totalScannedThisWeek: totalJobs[0]?.total || 0,
       jobs,
     })
   );
