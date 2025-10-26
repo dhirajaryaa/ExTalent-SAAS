@@ -16,7 +16,7 @@ function ReportCard({title,description,value,action}) {
         <CardHeader>
           <CardDescription>{title}</CardDescription>
           <CardTitle className="text-2xl font-bold tabular-nums sm:text-4xl">
-          {value > 9 ? value : `0${value}`}
+          {value === 0 ? 0 : value > 9 ? value : `0${value}`}
           </CardTitle>
           <CardAction>
             {
