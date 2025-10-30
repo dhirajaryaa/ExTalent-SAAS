@@ -6,5 +6,6 @@ import Onboarding from "./Onboarding";
 import UserProfile from "./UserProfile";
 import JobMatch from "./JobMatch";
 import JobDetails from "./JobDetails";
+import JobScan from "./JobScan";
 
-export { Home,NotFound,LoginPage,Dashboard,Onboarding ,UserProfile,JobMatch,JobDetails};
+export { Home,NotFound,LoginPage,Dashboard,Onboarding ,UserProfile,JobMatch,JobDetails,JobScan};

@@ -48,7 +48,7 @@ function JobDetails() {
     const res = await refetch();
     if(res){
       setJobs(res?.data?.data);
-      navigate("/job-match");
+      navigate("/job-match",{state: "Job Match"});
     }
   }
 

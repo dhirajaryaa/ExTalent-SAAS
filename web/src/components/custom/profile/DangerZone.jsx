@@ -63,7 +63,7 @@ function DangerZone() {
               recover it.
             </ItemDescription>
           </ItemContent>
-          <ItemActions asChild>
+          <ItemActions>
             <AlertDialogTrigger asChild>
               <Button variant={"destructive"}>
                 <Trash2 /> Delete

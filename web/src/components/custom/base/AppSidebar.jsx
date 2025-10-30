@@ -10,7 +10,8 @@ import {
   LayoutGridIcon,
   BriefcaseBusinessIcon,
   UserCircleIcon,
-  StarIcon
+  StarIcon,
+  SearchIcon
 } from "lucide-react";
 import { Link } from "react-router";
 import { Logo } from "..";
@@ -28,6 +29,11 @@ function AppSidebar() {
       title: "Profile",
       url: "/profile",
       icon: UserCircleIcon,
+    },
+     {
+      title: "Job Scan",
+      url: "/job-scan",
+      icon: SearchIcon,
     },
     {
       title: "Job Matches",
